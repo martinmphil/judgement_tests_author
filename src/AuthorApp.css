@@ -1,0 +1,31 @@
+body {
+  background-color: hsl(269, 41%, 90%);
+}
+
+.App {
+  font-family: serif;
+}
+
+h1,
+h2 {
+  font-family: sans-serif;
+}
+
+h2 {
+  font-size: 120%;
+}
+
+.error-warning {
+  color: hsl(0, 100%, 50%);
+}
+
+.number-input {
+  margin: 1em;
+}
+
+/* introduce magins at widths > 20em */
+@media only screen and (min-width: 20em) {
+  .App {
+    margin: 1em;
+  }
+}

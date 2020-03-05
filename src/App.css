@@ -1,0 +1,77 @@
+.App {
+  font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+  font-family: serif;
+}
+
+.exam-progress-bar {
+  font-family: serif;
+  font-size: small;
+  text-align: right;
+}
+
+.answer-option {
+  display: grid;
+  grid-template-columns: 4em auto 4em;
+  /* first and last column widths define width of "best" and "worst" buttons */
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+}
+
+.option-text {
+  margin: 0.5em;
+  text-align: center;
+}
+
+/* common to all answer buttons */
+.answer-button {
+  cursor: pointer;
+  border-radius: 0.5em;
+  font-weight: bold;
+  box-shadow: 0 0.4em 0.2em hsla(0, 0%, 0%, 0.1),
+    0 0.2em 0.125em hsla(0, 0%, 0%, 0.2);
+  height: 3em;
+  width: 4em;
+}
+.button-disabled {
+  opacity: 0.2;
+}
+
+.best-button {
+  background-color: hsl(145, 90%, 85%);
+  border-color: hsl(150, 80%, 40%);
+}
+.best-button:hover {
+  background-color: hsl(150, 80%, 40%);
+  border-color: hsl(212, 19%, 84%);
+}
+
+.worst-button {
+  background-color: hsl(0, 85%, 85%);
+  border-color: hsl(0, 70%, 42%);
+}
+.worst-button:hover {
+  background-color: hsl(0, 70%, 42%);
+  border-color: hsl(212, 19%, 84%);
+}
+
+/* Submit button */
+button[type="submit"] {
+  background-color: LightSkyBlue;
+  margin: 0.5em;
+  padding: 0.4em;
+}
+
+.error-warning {
+  color: hsl(0, 100%, 50%);
+}
+
+/* introduce magins at widths > 20em */
+@media only screen and (min-width: 20em) {
+  .App {
+    margin: 1em;
+  }
+}
