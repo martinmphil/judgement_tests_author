@@ -1,7 +1,7 @@
 # Authoring (SJT) Situational Judgement Tests
 Authoring, and assessing results from, situational judgment tests.
 
-![judgement-tests-logo](https://user-images.githubusercontent.com/37618836/50683939-c5291780-100b-11e9-8bbc-0ba27ca28872.png)
+![sjt_authoring_logo](https://user-images.githubusercontent.com/37618836/75996959-8be18580-5ef6-11ea-9ab6-998b5baafa6f.png)
 
 ## Available Scripts
 
