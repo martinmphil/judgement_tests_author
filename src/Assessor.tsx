@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import "./AssessorApp.css";
+import "./Assessor.css";
 
-const App: React.FC = () => {
+const Assessor: React.FC = () => {
   interface IQuestionResult {
     qScore: number;
     a: string;
     b: string;
     c: string;
     d: string;
-    time: string;
+    timestamp: string;
     ip: string;
   }
   interface IResultRow {
@@ -33,7 +33,7 @@ const App: React.FC = () => {
       email: "",
       candidateId: 0,
       candidateAnswers: [
-        { qScore: 0, a: "", b: "", c: "", d: "", time: "", ip: "" }
+        { qScore: 0, a: "", b: "", c: "", d: "", timestamp: "", ip: "" }
       ]
     }
   ]);
@@ -60,7 +60,7 @@ const App: React.FC = () => {
         b: "",
         c: "",
         d: "",
-        time: "",
+        timestamp: "",
         ip: ""
       };
 
@@ -101,7 +101,7 @@ const App: React.FC = () => {
       qResult.b = optionArray[1];
       qResult.c = optionArray[2];
       qResult.d = optionArray[3];
-      qResult.time = candidateAnswer.timestamp.substring(0, 19);
+      qResult.timestamp = candidateAnswer.timestamp.substring(0, 19);
       qResult.ip = candidateAnswer.ip;
 
       return qResult;
@@ -117,7 +117,7 @@ const App: React.FC = () => {
         name: "",
         email: "",
         candidateId: 0,
-        submission: [{ best: -1, worst: -1, time: "", ip: "" }]
+        submission: [{ best: -1, worst: -1, timestamp: "", ip: "" }]
       }
     ];
     // Array of URLs for getting markingScheme and answerPapers from server.
@@ -263,7 +263,7 @@ const App: React.FC = () => {
             x.email,
             x.candidateId,
             x.candidateAnswers.map(y => {
-              return [y.qScore, y.a, y.b, y.c, y.d, y.time, y.ip];
+              return [y.qScore, y.a, y.b, y.c, y.d, y.timestamp, y.ip];
             })
           ].join(",") + "\n"
         );
@@ -342,4 +342,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default Assessor;

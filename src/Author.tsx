@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "./AuthorApp.css";
+import "./Author.css";
 import SampleDataForSJT from "./SampleData";
 
-const App: React.FC = () => {
+const Author: React.FC = () => {
   const [examId, setExamId] = useState(1);
   const [questionNumber, setQuestionNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -279,4 +279,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default Author;

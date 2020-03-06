@@ -1,8 +1,8 @@
 import React from "react";
-import App from "./AuthorApp";
+import Assessor from "./Assessor";
 import ReactDOM from "react-dom";
 
 test("App renders without crashing", () => {
   const div = document.createElement("div");
-  ReactDOM.render(<App />, div);
+  ReactDOM.render(<Assessor />, div);
 });
