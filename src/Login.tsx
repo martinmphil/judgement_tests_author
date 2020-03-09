@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-const Login: React.FC = props => {
+interface Props {
+  setLicit: (x: boolean) => void;
+}
+
+const Login: React.FC<Props> = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -8,8 +12,10 @@ const Login: React.FC = props => {
     return email.length > 0 && password.length > 0;
   };
 
-  const handelSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    props.setLicit(true);
+    // NB set local storage
   };
 
   return (
@@ -37,7 +43,7 @@ const Login: React.FC = props => {
             onChange={e => setPassword(e.target.value)}
           />
         </p>
-        <button disabled={!validateForm()} type="submit">
+        <button disabled={!validateForm()} type="submit" onClick={handleSubmit}>
           Login
         </button>
       </form>
