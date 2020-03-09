@@ -1,3 +1,15 @@
+interface IScenario {
+  situation: string;
+  optionText: string[];
+  best: number;
+  worst: number;
+}
+
+interface IExam {
+  title: string;
+  scenarios: IScenario[];
+}
+
 interface QuestionText {
   scenarioText: any;
   optTextA: any;
@@ -5,22 +17,6 @@ interface QuestionText {
   optTextC: any;
   optTextD: any;
 }
-
-// NOT exported to candidate
-// const sampleMarkingScheme = {
-//   q1Best: 1,
-//   q1Worst: 4,
-//   q2Best: 3,
-//   q2Worst: 2,
-//   q3Best: 4,
-//   q3Worst: 1,
-//   q4Best: 2,
-//   q4Worst: 4
-// };
-
-const candidateId = 222;
-
-const examId = 1;
 
 const q1Text: QuestionText = {
   scenarioText:
@@ -72,52 +68,55 @@ const q4Text: QuestionText = {
     "Keep your weekly meetings with the department manager focused on your task list and find support from colleagues sitting near you in helping you settle into this role."
 };
 
-// let examPaper = [q1Text, q2Text, q3Text, q4Text];
-
 // aka examInProgress
-const SampleDataForSJT = {
-  questions: [
+const sampleExam: IExam = {
+  title: "Generalist",
+  scenarios: [
     {
-      answers: [
+      situation: q1Text.scenarioText,
+      optionText: [
         q1Text.optTextA,
         q1Text.optTextB,
         q1Text.optTextC,
         q1Text.optTextD
       ],
-      question: q1Text.scenarioText
+      best: 0,
+      worst: 3
     },
     {
-      answers: [
+      situation: q2Text.scenarioText,
+      optionText: [
         q2Text.optTextA,
         q2Text.optTextB,
         q2Text.optTextC,
         q2Text.optTextD
       ],
-      question: q2Text.scenarioText
+      best: 2,
+      worst: 1
     },
     {
-      answers: [
+      situation: q3Text.scenarioText,
+      optionText: [
         q3Text.optTextA,
         q3Text.optTextB,
         q3Text.optTextC,
         q3Text.optTextD
       ],
-      question: q3Text.scenarioText
+      best: 3,
+      worst: 0
     },
     {
-      answers: [
+      situation: q4Text.scenarioText,
+      optionText: [
         q4Text.optTextA,
         q4Text.optTextB,
         q4Text.optTextC,
         q4Text.optTextD
       ],
-      question: q4Text.scenarioText
+      best: 1,
+      worst: 3
     }
   ]
 };
 
-// eg
-// SampleDataForSJT.questions[0].question
-// SampleDataForSJT.questions[0].answers[0]
-
-export default SampleDataForSJT;
+export default sampleExam;

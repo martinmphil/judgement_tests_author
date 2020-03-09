@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Author.css";
-import SampleDataForSJT from "./SampleData";
+import sampleExam from "./SampleAuthorData";
 
 const Author: React.FC = () => {
   const [examId, setExamId] = useState(1);
@@ -9,6 +9,8 @@ const Author: React.FC = () => {
   const [loadingError, setLoadingError] = useState(false);
   const [idealBest, setIdealBest] = useState(0);
   const [idealWorst, setIdealWorst] = useState(0);
+
+  // editing exam questions needs to get rubric from server to set best and worst ideal answer
 
   const createExam = () => {
     setExamId(888);
@@ -133,7 +135,7 @@ const Author: React.FC = () => {
                 id="scenario-text"
                 cols={60}
                 rows={10}
-                defaultValue={SampleDataForSJT.questions[1].question}
+                defaultValue={sampleExam.scenarios[1].situation}
               ></textarea>
             </section>
             <fieldset>
@@ -146,7 +148,7 @@ const Author: React.FC = () => {
                 id="optA"
                 cols={60}
                 rows={4}
-                defaultValue={SampleDataForSJT.questions[1].answers[0]}
+                defaultValue={sampleExam.scenarios[1].optionText[0]}
               ></textarea>
               <br />
 
@@ -157,7 +159,7 @@ const Author: React.FC = () => {
                 id="optB"
                 cols={60}
                 rows={4}
-                defaultValue={SampleDataForSJT.questions[1].answers[1]}
+                defaultValue={sampleExam.scenarios[1].optionText[1]}
               ></textarea>
               <br />
 
@@ -168,7 +170,7 @@ const Author: React.FC = () => {
                 id="optC"
                 cols={60}
                 rows={4}
-                defaultValue={SampleDataForSJT.questions[1].answers[2]}
+                defaultValue={sampleExam.scenarios[1].optionText[2]}
               ></textarea>
               <br />
 
@@ -179,7 +181,7 @@ const Author: React.FC = () => {
                 id="optD"
                 cols={60}
                 rows={4}
-                defaultValue={SampleDataForSJT.questions[1].answers[3]}
+                defaultValue={sampleExam.scenarios[1].optionText[3]}
               ></textarea>
             </fieldset>
 

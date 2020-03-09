@@ -37,6 +37,5 @@
   },
   "devDependencies": {
     "prettier": "^1.19.1"
-  },
-  "homepage": "/author/"
+  }
 }
