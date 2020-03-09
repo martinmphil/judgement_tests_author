@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Assessor from "./Assessor";
 import Author from "./Author";
@@ -11,7 +11,6 @@ const App: React.FC = () => {
 
   const handleLoggingOut = () => {
     setLicit(false);
-    // NB clear local storage
   };
 
   const Home = () => {

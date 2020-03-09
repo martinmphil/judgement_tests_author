@@ -15,7 +15,6 @@ const Login: React.FC<Props> = props => {
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     props.setLicit(true);
-    // NB set local storage
   };
 
   return (
