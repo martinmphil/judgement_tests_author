@@ -1,5 +1,5 @@
 # Authoring (SJT) Situational Judgement Tests
-Authoring, and assessing results from, situational judgment tests.
+Authoring, and assessing results from, [situational judgment tests App](https://github.com/martinmphil/judgement_tests).
 
 ![sjt_authoring_logo](https://user-images.githubusercontent.com/37618836/75996959-8be18580-5ef6-11ea-9ab6-998b5baafa6f.png)
 
