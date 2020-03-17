@@ -2,8 +2,13 @@
   font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
 }
 
-h1 {
-  font-family: serif;
+body {
+  background-color: hsl(269, 41%, 90%);
+}
+
+h1,
+h2 {
+  font-family: sans-serif;
 }
 
 /* Submit button */
