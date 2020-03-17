@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Assessor.css";
+import "./Assess.css";
 
 const Assessor: React.FC = () => {
   interface IQuestionResult {
