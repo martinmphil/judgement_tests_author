@@ -6,6 +6,7 @@ import Invite from "./Invite";
 import Login from "./Login";
 import Logout from "./Logout";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { backend } from "./ConfigAssessor";
 
 const App: React.FC = () => {
   const [licit, setLicit] = useState(false);
