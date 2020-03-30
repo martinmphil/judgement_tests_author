@@ -26,8 +26,24 @@ const Login: React.FC<Props> = props => {
     })
       .then(response => {
         // NB work in progress
+        let cacheControl = response.headers.get("cache-control");
+        console.log("Cache-Control is " + cacheControl);
+
+        let expires = response.headers.get("expires");
+        console.log("Expires is " + expires);
+
+        let pragma = response.headers.get("pragma");
+        console.log("Pragma is " + pragma);
+
+        let authorization = response.headers.get("authorization");
+        console.log("Authorization is " + authorization);
+
+        console.log("response object follows");
         console.log(response);
-        // console.log(response.headers.get("Authorization"));
+        response.headers.forEach(x => {
+          console.log(x);
+        });
+        // console.log(response.headers.get("authorization"));
         //
         //
         if (!response.ok) {
