@@ -42,7 +42,13 @@ const App: React.FC = () => {
     );
   };
 
-  return licit ? <Home /> : <Login setLicit={setLicit} />;
+  return licit ? (
+    <Home />
+  ) : (
+    <main>
+      <Login loginUrl={`${backend}login`} setLicit={setLicit} />
+    </main>
+  );
 };
 
 export default App;

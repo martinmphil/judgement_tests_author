@@ -2,34 +2,59 @@ import React, { useState } from "react";
 
 interface Props {
   setLicit: (x: boolean) => void;
+  loginUrl: string;
 }
 
 const Login: React.FC<Props> = props => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorLoggingIn, setErrorLoggingIn] = useState(false);
 
   const validateForm = () => {
-    return email.length > 0 && password.length > 0;
+    return username.length > 0 && password.length > 0;
   };
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    props.setLicit(true);
+
+    fetch(props.loginUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ username, password })
+    })
+      .then(response => {
+        // NB work in progress
+        console.log(response);
+        // console.log(response.headers.get("Authorization"));
+        //
+        //
+        if (!response.ok) {
+          setErrorLoggingIn(true);
+        } else if (response.ok) {
+          props.setLicit(true);
+        }
+      })
+      .catch(error => {
+        setErrorLoggingIn(true);
+        console.error("Login error: ", error);
+      });
   };
 
   return (
-    <div>
+    <section>
       <p>Please log in </p>
       <form>
         <p>
-          <label htmlFor="email">e-mail:- </label>
+          <label htmlFor="username">e-mail:- </label>
           <input
             autoFocus
-            id="email"
-            name="email"
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
+            id="username"
+            name="username"
+            type="text"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
           />
         </p>
         <p>
@@ -46,7 +71,14 @@ const Login: React.FC<Props> = props => {
           Login
         </button>
       </form>
-    </div>
+
+      {errorLoggingIn && (
+        <p>
+          Sorry we encountered a login error. Please refresh this page and try
+          again later.
+        </p>
+      )}
+    </section>
   );
 };
 
