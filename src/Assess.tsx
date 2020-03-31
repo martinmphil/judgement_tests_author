@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./Assess.css";
 
+// NB if fetches fail with unorthorises, set licit to false
+
 const Assessor: React.FC = () => {
   interface IQuestionResult {
     qScore: number;

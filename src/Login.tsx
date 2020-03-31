@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 interface Props {
   setLicit: (x: boolean) => void;
+  setAuthorization: (x: string) => void;
   loginUrl: string;
 }
 
@@ -17,6 +18,8 @@ const Login: React.FC<Props> = props => {
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
+    localStorage.removeItem("authorization");
+
     fetch(props.loginUrl, {
       method: "POST",
       headers: {
@@ -25,18 +28,28 @@ const Login: React.FC<Props> = props => {
       body: JSON.stringify({ username, password })
     })
       .then(response => {
-        // NB work in progress
-        let cacheControl = response.headers.get("cache-control");
-        console.log("Cache-Control is " + cacheControl);
+        const authorization = response.headers.get("authorization");
 
-        let expires = response.headers.get("expires");
-        console.log("Expires is " + expires);
+        if (authorization) {
+          props.setAuthorization(authorization);
+          localStorage.setItem("authorization", authorization);
+        }
 
-        let pragma = response.headers.get("pragma");
-        console.log("Pragma is " + pragma);
-
-        let authorization = response.headers.get("authorization");
+        // REMOVE
         console.log("Authorization is " + authorization);
+
+        // NB work in progress
+        // let cacheControl = response.headers.get("cache-control");
+        // console.log("Cache-Control is " + cacheControl);
+
+        // let expires = response.headers.get("expires");
+        // console.log("Expires is " + expires);
+
+        // let pragma = response.headers.get("pragma");
+        // console.log("Pragma is " + pragma);
+
+        // let authorization = response.headers.get("authorization");
+        // console.log("Authorization is " + authorization);
 
         console.log("response object follows");
         console.log(response);

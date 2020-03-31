@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Assess from "./Assess";
 import Author from "./Author";
@@ -10,6 +10,17 @@ import { backend } from "./ConfigAssessor";
 
 const App: React.FC = () => {
   const [licit, setLicit] = useState(false);
+  const [authorization, setAuthorization] = useState("");
+
+  useEffect(() => {
+    const a = localStorage.getItem("authorization");
+    if (a) {
+      setAuthorization(a);
+      setLicit(true);
+    }
+  });
+
+  // use logout componenet for log out button
 
   const handleLoggingOut = () => {
     setLicit(false);
@@ -46,7 +57,11 @@ const App: React.FC = () => {
     <Home />
   ) : (
     <main>
-      <Login loginUrl={`${backend}login`} setLicit={setLicit} />
+      <Login
+        loginUrl={`${backend}login`}
+        setLicit={setLicit}
+        setAuthorization={setAuthorization}
+      />
     </main>
   );
 };
