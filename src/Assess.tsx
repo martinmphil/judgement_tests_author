@@ -1,27 +1,33 @@
 import React, { useState } from "react";
 import "./Assess.css";
+import ExamPicker from "./ExamPicker";
 
-// NB if fetches fail with unorthorises, set licit to false
+// NB if fetches fail with unauthorised, set licit to false
 
-const Assessor: React.FC = () => {
-  interface IQuestionResult {
-    qScore: number;
-    a: string;
-    b: string;
-    c: string;
-    d: string;
-    timestamp: string;
-    ip: string;
-  }
-  interface IResultRow {
-    totalScore: number;
-    percentage: number;
-    name: string;
-    email: string;
-    candidateId: number;
-    candidateAnswers: Array<IQuestionResult>;
-  }
+interface Props {
+  authorization: string;
+  backend: string;
+}
 
+interface IQuestionResult {
+  qScore: number;
+  a: string;
+  b: string;
+  c: string;
+  d: string;
+  timestamp: string;
+  ip: string;
+}
+interface IResultRow {
+  totalScore: number;
+  percentage: number;
+  name: string;
+  email: string;
+  candidateId: number;
+  candidateAnswers: Array<IQuestionResult>;
+}
+
+const Assessor: React.FC<Props> = props => {
   const [examId, setExamId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState(false);
@@ -39,12 +45,6 @@ const Assessor: React.FC = () => {
       ]
     }
   ]);
-  const examNbrChange = (event: React.FormEvent<HTMLInputElement>) => {
-    let x = parseInt(event.currentTarget.value);
-    if (Number.isInteger(x)) {
-      setExamId(x);
-    }
-  };
 
   // Fetch exam and mark, then set results state.
   const submitExamNbr = (event: React.FormEvent<HTMLFormElement>) => {
@@ -287,22 +287,16 @@ const Assessor: React.FC = () => {
   };
 
   return (
-    <div className="App">
+    <main>
       <h1>Assessor</h1>
-      {/* react controlled component */}
-      <form onSubmit={submitExamNbr}>
-        <label htmlFor="exam">
-          Exam id nbr:
-          <input
-            type="number"
-            className="exam-number-input"
-            id="exam"
-            onChange={examNbrChange}
-          />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-      <div>
+
+      <ExamPicker
+        setExamId={setExamId}
+        backend={props.backend}
+        authorization={props.authorization}
+      />
+
+      <section>
         <button
           onClick={() => downloadCsv()}
           id="downloadButton"
@@ -311,7 +305,7 @@ const Assessor: React.FC = () => {
           Download
         </button>
         full results csv file.
-      </div>
+      </section>
       <h2>Summary</h2>
 
       {isLoading && <p>Loading...</p>}
@@ -340,7 +334,7 @@ const Assessor: React.FC = () => {
           </tbody>
         </table>
       )}
-    </div>
+    </main>
   );
 };
 

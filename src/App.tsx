@@ -32,7 +32,7 @@ const App: React.FC = () => {
           </nav>
           <Switch>
             <Route exact path="/">
-              <Assess authorization={authorization} />
+              <Assess authorization={authorization} backend={backend} />
             </Route>
             <Route path="/author">
               <Author />
