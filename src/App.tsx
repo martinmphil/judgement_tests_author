@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
+import { backend } from "./ConfigAssessor";
 import Assess from "./Assess";
 import Author from "./Author";
 import Invite from "./Invite";
 import Login from "./Login";
-import Logout from "./Logout";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { backend } from "./ConfigAssessor";
+import LogoutBttn from "./LogoutBttn";
 
 const App: React.FC = () => {
   const [licit, setLicit] = useState(false);
@@ -18,21 +18,14 @@ const App: React.FC = () => {
       setAuthorization(a);
       setLicit(true);
     }
-  });
-
-  // use logout componenet for log out button
-
-  const handleLoggingOut = () => {
-    setLicit(false);
-  };
+  }, []);
 
   const Home = () => {
     return (
       <Router>
         <div className="App">
           <Link to="/">Assess</Link> | <Link to="/author">Author</Link> |{" "}
-          <Link to="/invite">Invite</Link> |{" "}
-          <button onClick={handleLoggingOut}>Logout</button>
+          <Link to="/invite">Invite</Link> | <LogoutBttn setLicit={setLicit} />
           <hr />
           <Switch>
             <Route exact path="/">
@@ -43,9 +36,6 @@ const App: React.FC = () => {
             </Route>
             <Route path="/invite">
               <Invite />
-            </Route>
-            <Route path="/logout">
-              <Logout setLicit={setLicit} />
             </Route>
           </Switch>
         </div>
