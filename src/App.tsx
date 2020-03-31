@@ -24,12 +24,15 @@ const App: React.FC = () => {
     return (
       <Router>
         <div className="App">
-          <Link to="/">Assess</Link> | <Link to="/author">Author</Link> |{" "}
-          <Link to="/invite">Invite</Link> | <LogoutBttn setLicit={setLicit} />
-          <hr />
+          <nav>
+            <Link to="/">Assess</Link> | <Link to="/author">Author</Link> |{" "}
+            <Link to="/invite">Invite</Link> |{" "}
+            <LogoutBttn setLicit={setLicit} />
+            <hr />
+          </nav>
           <Switch>
             <Route exact path="/">
-              <Assess />
+              <Assess authorization={authorization} />
             </Route>
             <Route path="/author">
               <Author />

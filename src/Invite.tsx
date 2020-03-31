@@ -14,7 +14,7 @@ const Assessor: React.FC = () => {
   };
 
   return (
-    <div className="App">
+    <main>
       <h1>Invite</h1>
       {/* react controlled component */}
       <form onSubmit={submitExamNbr}>
@@ -29,7 +29,7 @@ const Assessor: React.FC = () => {
         </label>
         <input type="submit" value="Submit" />
       </form>
-    </div>
+    </main>
   );
 };
 
