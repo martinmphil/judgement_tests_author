@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 const Assessor: React.FC = () => {
+  // NB chahge to set examId
   const [examNbr, setExamNbr] = useState(0);
 
   const submitExamNbr = () => {
@@ -9,6 +10,7 @@ const Assessor: React.FC = () => {
 
   const examNbrChange = () => {
     alert(examNbr);
+    setExamNbr(0);
   };
 
   return (
