@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import "./Assess.css";
 import ExamPicker from "./ExamPicker";
 
-// NB if fetches fail with unauthorised, set licit to false
-
 interface Props {
   authorization: string;
   backend: string;
