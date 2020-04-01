@@ -3,7 +3,6 @@ import { backend } from "./ConfigAssessor";
 
 interface Props {
   authorization: string;
-  backend: string;
   setExamId: (x: number) => void;
 }
 
@@ -73,7 +72,7 @@ const ExamPicker: React.FC<Props> = props => {
             ))}
             <div>
               <button type="submit">Submit</button>
-              <span>Exam number {examPicked}</span>
+              <span>Exam number:- {examPicked}</span>
             </div>
           </fieldset>
         </form>
