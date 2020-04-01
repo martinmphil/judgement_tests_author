@@ -30,20 +30,41 @@ const ExamPicker: React.FC<Props> = props => {
       })
       .then(data => {
         setExamList(data);
+        //
+        //
+        // NB REMOVE
         console.log(data);
       });
+  }, [props.authorization]);
 
-    // REMOVE
-    console.log("loading");
-  }, []);
+  const labelStyle = { display: "inline-block" };
 
   const ExamList = () => {
-    return <article>{examList.map(x => x.examTitle)}</article>;
+    return (
+      <form>
+        {examList.map((x, i) => (
+          <label
+            key={x.examNumber.toString()}
+            htmlFor={x.examNumber.toString()}
+            style={labelStyle}
+          >
+            <input
+              type="radio"
+              id={x.examNumber.toString()}
+              name="exam"
+              defaultChecked={i === 0 ? true : false}
+              value={x.examNumber}
+            ></input>
+            {x.examNumber} - {x.examTitle} |
+          </label>
+        ))}
+      </form>
+    );
   };
 
   return (
     <section>
-      <p>Pick an exam</p>
+      <p>Please pick an exam from the following list.</p>
       {loading && <p>Loading...</p>}
       {errorLoading && (
         <p>
