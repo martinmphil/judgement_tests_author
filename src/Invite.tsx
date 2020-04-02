@@ -1,33 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { backend } from "./ConfigAssessor";
+import ExamPicker from "./ExamPicker";
 
-const Assessor: React.FC = () => {
-  const [examNbr, setExamNbr] = useState(0);
+interface Props {
+  authorization: string;
+}
 
-  const submitExamNbr = () => {
-    alert("you submitted and exam number");
-  };
+const Assessor: React.FC<Props> = props => {
+  const [examId, setExamId] = useState(0);
+  const [examIsPicked, setExamIsPicked] = useState(false);
 
-  const examNbrChange = () => {
-    alert(examNbr);
+  useEffect(() => {
+    if (examId > 0) {
+      setExamIsPicked(true);
+    }
+  }, [examId]);
+
+  const Invitees = () => {
+    return (
+      <form>
+        <h2>Exam number {examId}</h2>
+        <fieldset>
+          <legend>Please enter invitees</legend>
+          <textarea name="invitees" id="invitee"></textarea>
+        </fieldset>
+      </form>
+    );
   };
 
   return (
-    <div className="App">
+    <main>
       <h1>Invite</h1>
-      {/* react controlled component */}
-      <form onSubmit={submitExamNbr}>
-        <label htmlFor="exam">
-          Exam id nbr:
-          <input
-            type="number"
-            className="exam-number-input"
-            id="exam"
-            onChange={examNbrChange}
-          />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-    </div>
+      <ExamPicker setExamId={setExamId} authorization={props.authorization} />
+      <hr />
+
+      {/* TO RMEOVE */}
+      <p>Current exam is {examId}</p>
+      <p>Base url is {backend} </p>
+      <hr />
+      {/* TO RMEOVE */}
+
+      {examIsPicked && <Invitees />}
+    </main>
   );
 };
 

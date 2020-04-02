@@ -81,7 +81,7 @@ const Author: React.FC = () => {
   };
 
   return (
-    <div className="App">
+    <main>
       <h1>Author</h1>
       <button onClick={createExam}>Start new exam</button>
       {/* react controlled component */}
@@ -277,7 +277,7 @@ const Author: React.FC = () => {
           </form>
         </main>
       )}
-    </div>
+    </main>
   );
 };
 
