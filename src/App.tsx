@@ -38,7 +38,7 @@ const App: React.FC = () => {
               <Author />
             </Route>
             <Route path="/invite">
-              <Invite />
+              <Invite authorization={authorization} />
             </Route>
           </Switch>
         </div>
