@@ -61,6 +61,8 @@ const Assessor: React.FC<Props> = props => {
     }
   ]);
 
+  //
+  // setExamReport
   useEffect(() => {
     if (examId > 0) {
       setLoading(true);
@@ -137,6 +139,7 @@ const Assessor: React.FC<Props> = props => {
         rubric: IScenarioRubric[],
         paper: ICandidateSubmissions
       ) => {
+        // Each element of the rubric maps to a question result for a candidate
         const markedSubmissions = rubric.map((x, index) => {
           return markQuestion(x, paper.submissions[index]);
         });
@@ -245,10 +248,14 @@ const Assessor: React.FC<Props> = props => {
       Promise.all([fetchRubric(examId), fetchSubmissions(examId)])
         .then(fetchedData => {
           let x = processMarkingPile(fetchedData[0], fetchedData[1]);
-          console.log(x);
+
+          setExamReport(x);
+
           setLoading(false);
 
-          //
+          setCsvReady(true);
+
+          // setExamReport
           //
           // TO RMEMOVE
           // console.log(fetchedData[0][3]);
@@ -268,6 +275,8 @@ const Assessor: React.FC<Props> = props => {
         });
     }
   }, [examId, props.authorization]);
+  // end setExamReport
+  //
 
   const downloadCsv = () => {
     // Set the rightmost column headings for many questions
@@ -279,7 +288,7 @@ const Assessor: React.FC<Props> = props => {
       }
     );
     // Set all csv column headings for this exam.
-    const csvColHead = `Score,Percentage,Name,E-mail,Candidate_id,${qMarkSheetHead}`;
+    const csvColHead = `Score,Percentage,Name,E-mail,${qMarkSheetHead}`;
 
     // Process examReport for csv.
 
@@ -308,7 +317,7 @@ const Assessor: React.FC<Props> = props => {
       .substring(0, 10)}.csv`;
     a.click();
 
-    setCsvReady(true);
+    // setCsvReady(true);
   };
 
   return (
@@ -346,10 +355,6 @@ const Assessor: React.FC<Props> = props => {
       )}
 
       {csvReady && <p>Out of {outOf}</p>}
-
-      {/* TO REMOVE */}
-      {<p>Out of {outOf}</p>}
-      {/* TO REMOVE */}
 
       {csvReady && (
         <table>
