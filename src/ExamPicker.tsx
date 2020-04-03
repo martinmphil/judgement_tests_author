@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./ExamPicker.css";
 import { backend } from "./ConfigAssessor";
 
 interface Props {
@@ -44,8 +45,6 @@ const ExamPicker: React.FC<Props> = props => {
     props.setExamId(examPicked);
   };
 
-  const labelStyle = { display: "inline-block" };
-
   const ExamList = () => {
     if (examList) {
       return (
@@ -56,7 +55,7 @@ const ExamPicker: React.FC<Props> = props => {
               <label
                 key={x.examNumber.toString()}
                 htmlFor={x.examNumber.toString()}
-                style={labelStyle}
+                className="exam-picker-input-label"
               >
                 <input
                   key={x.examNumber.toString()}
