@@ -61,7 +61,6 @@ const Assessor: React.FC<Props> = props => {
     }
   ]);
 
-  //
   // setExamReport
   useEffect(() => {
     if (examId > 0) {
@@ -121,16 +120,13 @@ const Assessor: React.FC<Props> = props => {
         rubric: IScenarioRubric[],
         markingPile: ICandidateSubmissions[]
       ) => {
-        const results = markingPile.map(paper => {
-          return markPaper(rubric, paper);
-        });
-
-        //
-        // REMOVE
-        // console.log(rubric);
-        // console.log(markingPile);
-
-        // is return value needed?
+        const results = markingPile
+          .map(paper => {
+            return markPaper(rubric, paper);
+          })
+          .sort((a, b) => {
+            return b.totalScore - a.totalScore;
+          });
 
         return results;
       };
@@ -210,7 +206,7 @@ const Assessor: React.FC<Props> = props => {
           qResult.qScore = 1;
         } else qResult.qScore = 0;
 
-        // Array [0,1,2,3,] represents judgements-options a, b, c & d.
+        // Array [0,1,2,3,] represents judgements-options a, b, c and d.
         const judgementsArray = [0, 1, 2, 3].map(x => {
           if (x === idealQAnswers.best && x === candidateQAnswers.best) {
             return "1";
@@ -227,7 +223,7 @@ const Assessor: React.FC<Props> = props => {
           ) {
             return "0";
           }
-          // Some scenarios mark only best or worst, NOT both.
+          // Some scenarios may mark only best or worst, not both.
           else return "";
         });
 
@@ -254,20 +250,6 @@ const Assessor: React.FC<Props> = props => {
           setLoading(false);
 
           setCsvReady(true);
-
-          // setExamReport
-          //
-          // TO RMEMOVE
-          // console.log(fetchedData[0][3]);
-          // let x = markQuestion(fetchedData[0][3], {
-          //   best: 0,
-          //   worst: 3,
-          //   ip: "",
-          //   timestamp: ""
-          // });
-          // console.log(x);
-          //
-          //
         })
         .catch(error => {
           setLoading(false);
@@ -316,8 +298,6 @@ const Assessor: React.FC<Props> = props => {
       .toISOString()
       .substring(0, 10)}.csv`;
     a.click();
-
-    // setCsvReady(true);
   };
 
   return (
@@ -355,6 +335,8 @@ const Assessor: React.FC<Props> = props => {
       )}
 
       {csvReady && <p>Out of {outOf}</p>}
+
+      {!examReport.length && <p>This exam has no results.</p>}
 
       {csvReady && (
         <table>
