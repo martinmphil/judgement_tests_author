@@ -46,7 +46,7 @@ const Assessor: React.FC<Props> = props => {
   const [examId, setExamId] = useState(0);
   const [loading, setLoading] = useState(false);
   const [errorLoadingRubric, setErrorLoadingRubric] = useState(false);
-  const [errorLoadingMarkingPile, setErrorMarkingPile] = useState(false);
+  const [errorLoadingMarkingPile, setErrorLoadingMarkingPile] = useState(false);
   const [csvReady, setCsvReady] = useState(false);
   const [outOf, setOutOf] = useState(0);
   const [examReport, setExamReport] = useState<IResultRow[]>([
@@ -102,7 +102,7 @@ const Assessor: React.FC<Props> = props => {
           .then(response => {
             setLoading(false);
             if (!response.ok) {
-              setErrorMarkingPile(true);
+              setErrorLoadingMarkingPile(true);
             } else {
               return response.json();
             }
@@ -111,18 +111,18 @@ const Assessor: React.FC<Props> = props => {
             return data;
           })
           .catch(error => {
-            setErrorMarkingPile(true);
+            setErrorLoadingMarkingPile(true);
             console.error("Error:", error);
           });
       };
 
-      const processMarkingPile = (
+      const processEveryCandidate = (
         rubric: IScenarioRubric[],
         markingPile: ICandidateSubmissions[]
       ) => {
         const results = markingPile
           .map(paper => {
-            return markPaper(rubric, paper);
+            return markOnePaper(rubric, paper);
           })
           .sort((a, b) => {
             return b.totalScore - a.totalScore;
@@ -131,7 +131,7 @@ const Assessor: React.FC<Props> = props => {
         return results;
       };
 
-      const markPaper = (
+      const markOnePaper = (
         rubric: IScenarioRubric[],
         paper: ICandidateSubmissions
       ) => {
@@ -243,8 +243,7 @@ const Assessor: React.FC<Props> = props => {
 
       Promise.all([fetchRubric(examId), fetchSubmissions(examId)])
         .then(fetchedData => {
-          let x = processMarkingPile(fetchedData[0], fetchedData[1]);
-
+          const x = processEveryCandidate(fetchedData[0], fetchedData[1]);
           setExamReport(x);
 
           setLoading(false);

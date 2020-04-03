@@ -2,10 +2,6 @@ h2 {
   font-size: 120%;
 }
 
-.error-warning {
-  color: hsl(0, 100%, 50%);
-}
-
 .number-input {
   margin: 1em;
 }
