@@ -4,5 +4,5 @@ import Author from "./Author";
 
 test("Author renders without crashing", () => {
   const div = document.createElement("div");
-  ReactDOM.render(<Author />, div);
+  ReactDOM.render(<Author authorization={"string"} />, div);
 });
