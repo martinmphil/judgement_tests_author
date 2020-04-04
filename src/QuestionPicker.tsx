@@ -21,7 +21,7 @@ const QuestionPicker: React.FC<Props> = props => {
           <label
             key={scenario.situation + index}
             htmlFor={scenario.situation + index}
-            className="edit-question-picker-input-label"
+            className="question-picker-input-label"
           >
             <input
               key={scenario.situation + index}
