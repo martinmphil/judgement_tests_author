@@ -12,7 +12,7 @@ interface IScenarios {
   judgements: string[];
 }
 
-const QuestionPicker: React.FC<Props> = props => {
+const QuestionPicker: React.FC<Props> = (props) => {
   return (
     <form>
       <fieldset>
@@ -29,7 +29,7 @@ const QuestionPicker: React.FC<Props> = props => {
               id={scenario.situation + index}
               name="question"
               checked={props.questionIndex === index}
-              onChange={e => props.setQuestionIndex(index)}
+              onChange={() => props.setQuestionIndex(index)}
               value={index}
             ></input>
             Question nbr {index + 1} |
