@@ -329,7 +329,7 @@ const Assessor: React.FC<Props> = (props) => {
 
   return (
     <main>
-      <h1>Assessor</h1>
+      <h1>Assess</h1>
 
       <ExamPicker setExamId={setExamId} authorization={props.authorization} />
 
