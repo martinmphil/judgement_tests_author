@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-
-import "./Create.css";
+import "./AddExam.css";
 import { backend } from "./ConfigAssessor";
 
 interface Props {
   authorization: string;
 }
 
-const Create: React.FC<Props> = props => {
+const AddExam: React.FC<Props> = props => {
   const [examId, setExamId] = useState(0);
 
   // TO REMOVE
@@ -18,11 +17,11 @@ const Create: React.FC<Props> = props => {
   return (
     <main>
       <p>
-        Create {examId} {backend}
+        Add Exam {examId} {backend}
       </p>
       <button onClick={handler}>TO RMEOVE</button>
     </main>
   );
 };
 
-export default Create;
+export default AddExam;
