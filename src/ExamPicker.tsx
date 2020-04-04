@@ -53,17 +53,17 @@ const ExamPicker: React.FC<Props> = props => {
             <legend>Please pick an exam</legend>
             {examList.map((x, i) => (
               <label
-                key={x.examNumber.toString()}
-                htmlFor={x.examNumber.toString()}
+                key={x.examNumber.toString() + "exam-picker"}
+                htmlFor={x.examNumber.toString() + "exam-picker"}
                 className="exam-picker-input-label"
               >
                 <input
-                  key={x.examNumber.toString()}
+                  key={x.examNumber.toString() + "exam-picker"}
                   type="radio"
-                  id={x.examNumber.toString()}
+                  id={x.examNumber.toString() + "exam-picker"}
                   name="exam"
                   checked={examPicked === i + 1}
-                  onChange={e => setExamPicked(parseInt(e.target.value))}
+                  onChange={() => setExamPicked(x.examNumber)}
                   value={x.examNumber}
                 ></input>
                 {x.examNumber} - {x.examTitle} |
