@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Edit.css";
 import { backend } from "./ConfigAssessor";
 import ExamPicker from "./ExamPicker";
+import QuestionPicker from "./QuestionPicker";
 
 interface Props {
   authorization: string;
@@ -71,40 +72,16 @@ const Edit: React.FC<Props> = props => {
     }
   }, [examId, props.authorization]);
 
-  const QuestionPicker = () => {
-    return (
-      <form>
-        <fieldset>
-          <legend>Pick a question</legend>
-          {examData.scenarios.map((scenario, index) => (
-            <label
-              key={scenario.situation + index}
-              htmlFor={scenario.situation + index}
-              className="edit-question-picker-input-label"
-            >
-              <input
-                key={scenario.situation + index}
-                type="radio"
-                id={scenario.situation + index}
-                name="question"
-                checked={questionIndex === index}
-                onChange={e => setQuestionIndex(index)}
-                value={index}
-              ></input>
-              Question nbr {index + 1} |
-            </label>
-          ))}
-        </fieldset>
-      </form>
-    );
-  };
-
   const ExamText = () => {
     return (
       <section>
         <h1>{examData.title}</h1>
         <h2>Exam number {examData.examNumber}</h2>
-        <QuestionPicker />
+        <QuestionPicker
+          scenarios={examData.scenarios}
+          questionIndex={questionIndex}
+          setQuestionIndex={setQuestionIndex}
+        />
       </section>
     );
   };
