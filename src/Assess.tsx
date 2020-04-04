@@ -42,7 +42,7 @@ interface IResultRow {
   markedSubmissions: Array<IQuestionResult>;
 }
 
-const Assessor: React.FC<Props> = props => {
+const Assessor: React.FC<Props> = (props) => {
   const [examId, setExamId] = useState(0);
   const [loading, setLoading] = useState(false);
   const [errorLoadingRubric, setErrorLoadingRubric] = useState(false);
@@ -56,9 +56,9 @@ const Assessor: React.FC<Props> = props => {
       name: "",
       email: "",
       markedSubmissions: [
-        { qScore: 0, a: "", b: "", c: "", d: "", timestamp: "", ip: "" }
-      ]
-    }
+        { qScore: 0, a: "", b: "", c: "", d: "", timestamp: "", ip: "" },
+      ],
+    },
   ]);
 
   // setExamReport
@@ -71,10 +71,10 @@ const Assessor: React.FC<Props> = props => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            authorization: props.authorization
-          }
+            authorization: props.authorization,
+          },
         })
-          .then(response => {
+          .then((response) => {
             setLoading(false);
             if (!response.ok) {
               setErrorLoadingRubric(true);
@@ -82,10 +82,10 @@ const Assessor: React.FC<Props> = props => {
               return response.json();
             }
           })
-          .then(data => {
+          .then((data) => {
             return data;
           })
-          .catch(error => {
+          .catch((error) => {
             setErrorLoadingRubric(true);
             console.error("Error:", error);
           });
@@ -96,10 +96,10 @@ const Assessor: React.FC<Props> = props => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            authorization: props.authorization
-          }
+            authorization: props.authorization,
+          },
         })
-          .then(response => {
+          .then((response) => {
             setLoading(false);
             if (!response.ok) {
               setErrorLoadingMarkingPile(true);
@@ -107,10 +107,10 @@ const Assessor: React.FC<Props> = props => {
               return response.json();
             }
           })
-          .then(data => {
+          .then((data) => {
             return data;
           })
-          .catch(error => {
+          .catch((error) => {
             setErrorLoadingMarkingPile(true);
             console.error("Error:", error);
           });
@@ -121,7 +121,7 @@ const Assessor: React.FC<Props> = props => {
         markingPile: ICandidateSubmissions[]
       ) => {
         const results = markingPile
-          .map(paper => {
+          .map((paper) => {
             return markOnePaper(rubric, paper);
           })
           .sort((a, b) => {
@@ -171,7 +171,7 @@ const Assessor: React.FC<Props> = props => {
           percentage,
           name: paper.name,
           email: paper.email,
-          markedSubmissions
+          markedSubmissions,
         };
       };
 
@@ -181,7 +181,7 @@ const Assessor: React.FC<Props> = props => {
           best: -1,
           worst: -2,
           ip: "",
-          timestamp: ""
+          timestamp: "",
         }
       ) => {
         let qResult: IQuestionResult = {
@@ -191,7 +191,7 @@ const Assessor: React.FC<Props> = props => {
           c: "",
           d: "",
           timestamp: "",
-          ip: ""
+          ip: "",
         };
 
         if (
@@ -207,7 +207,7 @@ const Assessor: React.FC<Props> = props => {
         } else qResult.qScore = 0;
 
         // Array [0,1,2,3,] represents judgements-options a, b, c and d.
-        const judgementsArray = [0, 1, 2, 3].map(x => {
+        const judgementsArray = [0, 1, 2, 3].map((x) => {
           if (x === idealQAnswers.best && x === candidateQAnswers.best) {
             return "1";
           } else if (
@@ -242,7 +242,7 @@ const Assessor: React.FC<Props> = props => {
       };
 
       Promise.all([fetchRubric(examId), fetchSubmissions(examId)])
-        .then(fetchedData => {
+        .then((fetchedData) => {
           const x = processEveryCandidate(fetchedData[0], fetchedData[1]);
           setExamReport(x);
 
@@ -250,7 +250,7 @@ const Assessor: React.FC<Props> = props => {
 
           setCsvReady(true);
         })
-        .catch(error => {
+        .catch((error) => {
           setLoading(false);
           console.error(error.message);
         });
@@ -273,16 +273,16 @@ const Assessor: React.FC<Props> = props => {
 
     // Process examReport for csv.
 
-    const csvRows = examReport.map(x => {
+    const csvRows = examReport.map((x) => {
       return (
         [
           x.totalScore,
           x.percentage,
           x.name,
           x.email,
-          x.markedSubmissions.map(y => {
+          x.markedSubmissions.map((y) => {
             return [y.qScore, y.a, y.b, y.c, y.d, y.timestamp, y.ip];
-          })
+          }),
         ].join(",") + "\n"
       );
     });
@@ -297,6 +297,34 @@ const Assessor: React.FC<Props> = props => {
       .toISOString()
       .substring(0, 10)}.csv`;
     a.click();
+  };
+
+  const SummarySection = () => {
+    return (
+      <section>
+        <h2>Summary</h2>
+        <p>Out of {outOf}</p>
+        <table>
+          <caption>Exam {examId} results</caption>
+          <tbody>
+            <tr>
+              <th scope="col">Score</th>
+              <th scope="col">Name</th>
+              <th scope="col">E-mail</th>
+            </tr>
+            {examReport.map((x) => {
+              return (
+                <tr key={x.email}>
+                  <td>{x.totalScore}</td>
+                  <td>{x.name}</td>
+                  <td>{x.email}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </section>
+    );
   };
 
   return (
@@ -315,7 +343,6 @@ const Assessor: React.FC<Props> = props => {
         </button>
         full results csv file.
       </section>
-      <h2>Summary</h2>
 
       {loading && <p>Loading...</p>}
 
@@ -333,31 +360,9 @@ const Assessor: React.FC<Props> = props => {
         </p>
       )}
 
-      {csvReady && <p>Out of {outOf}</p>}
-
       {!examReport.length && <p>This exam has no results.</p>}
 
-      {csvReady && (
-        <table>
-          <caption>Exam {examId} results</caption>
-          <tbody>
-            <tr>
-              <th scope="col">Score</th>
-              <th scope="col">Name</th>
-              <th scope="col">E-mail</th>
-            </tr>
-            {examReport.map(x => {
-              return (
-                <tr key={x.email}>
-                  <td>{x.totalScore}</td>
-                  <td>{x.name}</td>
-                  <td>{x.email}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      )}
+      {csvReady && <SummarySection />}
     </main>
   );
 };
