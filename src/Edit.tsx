@@ -36,6 +36,7 @@ const Edit: React.FC<Props> = props => {
       }
     ]
   });
+  const [questionIndex, setQuestionIndex] = useState(0);
 
   useEffect(() => {
     const fetchExam = (pickedExam: number) => {
@@ -55,8 +56,9 @@ const Edit: React.FC<Props> = props => {
           }
         })
         .then(data => {
-          setExamData(data);
-          // return data;
+          if (data) {
+            setExamData(data);
+          }
         })
         .catch(error => {
           setErrorLoadingExam(true);
@@ -68,6 +70,44 @@ const Edit: React.FC<Props> = props => {
       fetchExam(examId);
     }
   }, [examId, props.authorization]);
+
+  const QuestionPicker = () => {
+    return (
+      <form>
+        <fieldset>
+          <legend>Pick a question</legend>
+          {examData.scenarios.map((scenario, index) => (
+            <label
+              key={scenario.situation + index}
+              htmlFor={scenario.situation + index}
+              className="edit-question-picker-input-label"
+            >
+              <input
+                key={scenario.situation + index}
+                type="radio"
+                id={scenario.situation + index}
+                name="question"
+                checked={questionIndex === index}
+                onChange={e => setQuestionIndex(index)}
+                value={index}
+              ></input>
+              Question nbr {index + 1} |
+            </label>
+          ))}
+        </fieldset>
+      </form>
+    );
+  };
+
+  const ExamText = () => {
+    return (
+      <section>
+        <h1>{examData.title}</h1>
+        <h2>Exam number {examData.examNumber}</h2>
+        <QuestionPicker />
+      </section>
+    );
+  };
 
   return (
     <main>
@@ -83,8 +123,10 @@ const Edit: React.FC<Props> = props => {
       )}
 
       {/* TO REMOVE */}
-      <p>Edit {examData.title}</p>
+      <p>Edit q index {questionIndex}</p>
       {/* TO REMOVE */}
+
+      {examData.examNumber > 0 ? <ExamText /> : ""}
     </main>
   );
 };
