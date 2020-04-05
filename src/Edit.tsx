@@ -43,10 +43,7 @@ const Edit: React.FC<Props> = (props) => {
   const [idealBest, setIdealBest] = useState(-1);
   const [idealWorst, setIdealWorst] = useState(-2);
   const [situation, setSituation] = useState("");
-  const [judgementA, setJudgementA] = useState("");
-  const [judgementB, setJudgementB] = useState("");
-  const [judgementC, setJudgementC] = useState("");
-  const [judgementD, setJudgementD] = useState("");
+  const [judgements, setJudgements] = useState([""]);
 
   useEffect(() => {
     if (examId > 0) {
@@ -107,18 +104,7 @@ const Edit: React.FC<Props> = (props) => {
           if (fetchedData[1]) {
             setExamData(fetchedData[1]);
             setSituation(fetchedData[1].scenarios[questionIndex].situation);
-            setJudgementA(
-              fetchedData[1].scenarios[questionIndex].judgements[0]
-            );
-            setJudgementB(
-              fetchedData[1].scenarios[questionIndex].judgements[1]
-            );
-            setJudgementC(
-              fetchedData[1].scenarios[questionIndex].judgements[2]
-            );
-            setJudgementD(
-              fetchedData[1].scenarios[questionIndex].judgements[3]
-            );
+            setJudgements(fetchedData[1].scenarios[questionIndex].judgements);
           }
 
           setLoading(false);
@@ -145,7 +131,7 @@ const Edit: React.FC<Props> = (props) => {
           examId={examId}
           questionIndex={questionIndex}
           situation={situation}
-          judgements={[judgementA, judgementB, judgementC, judgementD]}
+          judgements={judgements}
           idealBest={idealBest}
           idealWorst={idealWorst}
         />
@@ -176,12 +162,7 @@ const Edit: React.FC<Props> = (props) => {
       {examData.examNumber > 0 && !errorLoadingExam && !errorLoadingRubric && (
         <QuestionSection />
       )}
-
-      {/* TO REMOVE */}
-
-      <p>situation:- {situation}</p>
-      <p>jA:- {judgementA}</p>
-      {/* TO REMOVE */}
+      <hr />
     </main>
   );
 };
