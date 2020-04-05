@@ -141,6 +141,8 @@ const Edit: React.FC<Props> = (props) => {
 
   return (
     <main>
+      <h1>Edit Question</h1>
+
       <ExamPicker setExamId={setExamId} authorization={props.authorization} />
 
       {loading && <p>Loading...</p>}

@@ -78,6 +78,7 @@ const EditPut: React.FC<Props> = (props) => {
     //     setErrrorUploading(true);
     //     console.error("Error:", error);
     //   });
+    //
   };
 
   const submitQuestion = (event: { preventDefault: () => void }) => {
@@ -93,9 +94,6 @@ const EditPut: React.FC<Props> = (props) => {
 
   return (
     <section>
-      {/* TO REMOVE */}
-      {newBest}
-
       {errrorUploading && (
         <p className="error-warning">
           Sorry we experienced an error up-loading to exam number "

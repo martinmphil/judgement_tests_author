@@ -6,7 +6,7 @@ interface Props {
   authorization: string;
 }
 
-const AddQuestion: React.FC<Props> = props => {
+const AddQuestion: React.FC<Props> = (props) => {
   const [examId, setExamId] = useState(0);
 
   // TO REMOVE
@@ -16,6 +16,7 @@ const AddQuestion: React.FC<Props> = props => {
 
   return (
     <main>
+      <h1>Add Question</h1>
       <p>
         Add question {examId} {backend}
       </p>
