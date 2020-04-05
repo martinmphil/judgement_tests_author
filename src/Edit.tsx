@@ -148,13 +148,6 @@ const Edit: React.FC<Props> = (props) => {
           judgements={[judgementA, judgementB, judgementC, judgementD]}
           idealBest={idealBest}
           idealWorst={idealWorst}
-          setIdealBest={setIdealBest}
-          setIdealWorst={setIdealWorst}
-          setSituation={setSituation}
-          setJudgementA={setJudgementA}
-          setJudgementB={setJudgementA}
-          setJudgementC={setJudgementA}
-          setJudgementD={setJudgementA}
         />
       </section>
     );
