@@ -1,9 +1,18 @@
 import React, { useState } from "react";
 import "./Author.css";
+// import { backend } from "./ConfigAssessor";
+import ExamPicker from "./ExamPicker";
+
+//
+// To remove
 import sampleExam from "./SampleAuthorData";
 
-const Author: React.FC = () => {
-  const [examId, setExamId] = useState(1);
+interface Props {
+  authorization: string;
+}
+
+const Author: React.FC<Props> = props => {
+  const [examId, setExamId] = useState(0);
   const [questionNumber, setQuestionNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState(false);
@@ -21,21 +30,6 @@ const Author: React.FC = () => {
 
   const createQuestion = () => {
     setQuestionNumber(11);
-  };
-
-  const examNbrChange = (event: React.FormEvent<HTMLInputElement>) => {
-    let x = parseInt(event.currentTarget.value);
-    if (Number.isInteger(x)) {
-      setExamId(x);
-    }
-  };
-
-  const submitExamNbr = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    alert("you submitted an exam number");
-    if (examId > 0) {
-      setIsLoading(false);
-    }
   };
 
   const questionNbrChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -83,20 +77,13 @@ const Author: React.FC = () => {
   return (
     <main>
       <h1>Author</h1>
-      <button onClick={createExam}>Start new exam</button>
-      {/* react controlled component */}
-      <form onSubmit={submitExamNbr}>
-        <label htmlFor="exam">
-          Exam id nbr:
-          <input
-            type="number"
-            className="number-input"
-            id="exam"
-            onChange={examNbrChange}
-          />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      <button onClick={createExam}>Create new exam</button>
+
+      <hr />
+      <h2>Edit an existing exam</h2>
+
+      <ExamPicker setExamId={setExamId} authorization={props.authorization} />
+
       {isLoading && <p>Loading...</p>}
       {loadingError && (
         <p className="error-warning">
@@ -107,7 +94,6 @@ const Author: React.FC = () => {
       {!isLoading && (
         <main>
           <h2>Exam number {examId}</h2>
-          {/* react controlled component */}
           <form onSubmit={submitQuestionNbr}>
             <label htmlFor="question-picker">
               Edit existing question number:

@@ -1,11 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import ExamPicker from "./ExamPicker";
+import Edit from "./Edit";
 
 test("Assess renders without crashing", () => {
   const div = document.createElement("div");
-  ReactDOM.render(
-    <ExamPicker authorization={"string"} setExamId={jest.fn} />,
-    div
-  );
+  ReactDOM.render(<Edit authorization={"string"} />, div);
 });

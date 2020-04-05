@@ -7,7 +7,7 @@ interface Props {
   setExamId: (x: number) => void;
 }
 
-const ExamPicker: React.FC<Props> = props => {
+const ExamPicker: React.FC<Props> = (props) => {
   const [loading, setLoading] = useState(true);
   const [errorLoading, setErrorLoading] = useState(false);
   const [examList, setExamList] = useState([{ examNumber: 0, examTitle: "" }]);
@@ -18,10 +18,10 @@ const ExamPicker: React.FC<Props> = props => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        authorization: props.authorization
-      }
+        authorization: props.authorization,
+      },
     })
-      .then(response => {
+      .then((response) => {
         setLoading(false);
         if (!response.ok) {
           setErrorLoading(true);
@@ -29,10 +29,10 @@ const ExamPicker: React.FC<Props> = props => {
           return response.json();
         }
       })
-      .then(data => {
+      .then((data) => {
         setExamList(data);
       })
-      .catch(error => {
+      .catch((error) => {
         setErrorLoading(true);
         setLoading(false);
         console.error("Error:", error);
@@ -53,17 +53,17 @@ const ExamPicker: React.FC<Props> = props => {
             <legend>Please pick an exam</legend>
             {examList.map((x, i) => (
               <label
-                key={x.examNumber.toString()}
-                htmlFor={x.examNumber.toString()}
+                key={x.examNumber.toString() + "exam-picker"}
+                htmlFor={x.examNumber.toString() + "exam-picker"}
                 className="exam-picker-input-label"
               >
                 <input
-                  key={x.examNumber.toString()}
+                  key={x.examNumber.toString() + "exam-picker"}
                   type="radio"
-                  id={x.examNumber.toString()}
+                  id={x.examNumber.toString() + "exam-picker"}
                   name="exam"
                   checked={examPicked === i + 1}
-                  onChange={e => setExamPicked(parseInt(e.target.value))}
+                  onChange={() => setExamPicked(x.examNumber)}
                   value={x.examNumber}
                 ></input>
                 {x.examNumber} - {x.examTitle} |
@@ -71,7 +71,7 @@ const ExamPicker: React.FC<Props> = props => {
             ))}
             <div>
               <button type="submit">Submit</button>
-              <span>Exam number:- {examPicked}</span>
+              <span>Exam number: {examPicked}</span>
             </div>
           </fieldset>
         </form>

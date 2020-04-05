@@ -6,6 +6,9 @@ import Assess from "./Assess";
 import Author from "./Author";
 import Invite from "./Invite";
 import Login from "./Login";
+import Edit from "./Edit";
+import AddExam from "./AddExam";
+import AddQuestion from "./AddQuestion";
 import LogoutBttn from "./LogoutBttn";
 
 const App: React.FC = () => {
@@ -27,6 +30,9 @@ const App: React.FC = () => {
           <nav>
             <Link to="/">Assess</Link> | <Link to="/author">Author</Link> |{" "}
             <Link to="/invite">Invite</Link> |{" "}
+            <Link to="/edit-question">Edit Question</Link> |{" "}
+            <Link to="/add-question">Add Question</Link> |{" "}
+            <Link to="/add-exam">Add Exam</Link> |{" "}
             <LogoutBttn setLicit={setLicit} />
             <hr />
           </nav>
@@ -35,10 +41,19 @@ const App: React.FC = () => {
               <Assess authorization={authorization} />
             </Route>
             <Route path="/author">
-              <Author />
+              <Author authorization={authorization} />
             </Route>
             <Route path="/invite">
               <Invite authorization={authorization} />
+            </Route>
+            <Route path="/edit-question">
+              <Edit authorization={authorization} />
+            </Route>
+            <Route path="/add-question">
+              <AddQuestion authorization={authorization} />
+            </Route>
+            <Route path="/add-exam">
+              <AddExam authorization={authorization} />
             </Route>
           </Switch>
         </div>
