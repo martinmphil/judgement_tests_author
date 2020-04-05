@@ -3,7 +3,7 @@ import "./Edit.css";
 import { backend } from "./ConfigAssessor";
 import ExamPicker from "./ExamPicker";
 import QuestionPicker from "./QuestionPicker";
-import ScenarioFrame from "./ScenarioFrame";
+import EditPut from "./EditPut";
 
 interface Props {
   authorization: string;
@@ -26,7 +26,7 @@ const Edit: React.FC<Props> = (props) => {
   const [examId, setExamId] = useState(0);
   const [loading, setLoading] = useState(false);
   const [errorLoadingExam, setErrorLoadingExam] = useState(false);
-  const [errorLoadingRubic, setErrorLoadingRubric] = useState(false);
+  const [errorLoadingRubric, setErrorLoadingRubric] = useState(false);
   const [examData, setExamData] = useState<IExamData>({
     examNumber: 0,
     title: "",
@@ -42,6 +42,11 @@ const Edit: React.FC<Props> = (props) => {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [idealBest, setIdealBest] = useState(-1);
   const [idealWorst, setIdealWorst] = useState(-2);
+  const [situation, setSituation] = useState("");
+  const [judgementA, setJudgementA] = useState("");
+  const [judgementB, setJudgementB] = useState("");
+  const [judgementC, setJudgementC] = useState("");
+  const [judgementD, setJudgementD] = useState("");
 
   useEffect(() => {
     if (examId > 0) {
@@ -54,7 +59,6 @@ const Edit: React.FC<Props> = (props) => {
           },
         })
           .then((response) => {
-            setLoading(false);
             if (!response.ok) {
               setErrorLoadingRubric(true);
             } else {
@@ -79,7 +83,6 @@ const Edit: React.FC<Props> = (props) => {
           },
         })
           .then((response) => {
-            setLoading(false);
             if (!response.ok) {
               setErrorLoadingExam(true);
             } else {
@@ -97,10 +100,26 @@ const Edit: React.FC<Props> = (props) => {
 
       Promise.all([fetchRubric(examId), fetchExam(examId)])
         .then((fetchedData) => {
-          setIdealBest(fetchedData[0][questionIndex].best);
-          setIdealWorst(fetchedData[0][questionIndex].worst);
-
-          setExamData(fetchedData[1]);
+          if (fetchedData[0]) {
+            setIdealBest(fetchedData[0][questionIndex].best);
+            setIdealWorst(fetchedData[0][questionIndex].worst);
+          }
+          if (fetchedData[1]) {
+            setExamData(fetchedData[1]);
+            setSituation(fetchedData[1].scenarios[questionIndex].situation);
+            setJudgementA(
+              fetchedData[1].scenarios[questionIndex].judgements[0]
+            );
+            setJudgementB(
+              fetchedData[1].scenarios[questionIndex].judgements[1]
+            );
+            setJudgementC(
+              fetchedData[1].scenarios[questionIndex].judgements[2]
+            );
+            setJudgementD(
+              fetchedData[1].scenarios[questionIndex].judgements[3]
+            );
+          }
 
           setLoading(false);
         })
@@ -109,21 +128,6 @@ const Edit: React.FC<Props> = (props) => {
           console.error(error.message);
         });
     }
-
-    // if (examId > 0) {
-    //   fetchExam(examId);
-    // }
-
-    //
-    //
-    //
-    // TO REMOVE
-    // console.log("ideal best is " + idealBest);
-    // console.log("ideal worst is " + idealWorst);
-
-    //
-    //
-    //
   }, [examId, props.authorization, questionIndex]);
 
   const QuestionSection = () => {
@@ -136,14 +140,21 @@ const Edit: React.FC<Props> = (props) => {
           questionIndex={questionIndex}
           setQuestionIndex={setQuestionIndex}
         />
-        <ScenarioFrame
+        <EditPut
+          authorization={props.authorization}
+          examId={examId}
           questionIndex={questionIndex}
-          situation={examData.scenarios[questionIndex].situation}
-          judgements={examData.scenarios[questionIndex].judgements}
+          situation={situation}
+          judgements={[judgementA, judgementB, judgementC, judgementD]}
           idealBest={idealBest}
           idealWorst={idealWorst}
           setIdealBest={setIdealBest}
           setIdealWorst={setIdealWorst}
+          setSituation={setSituation}
+          setJudgementA={setJudgementA}
+          setJudgementB={setJudgementA}
+          setJudgementC={setJudgementA}
+          setJudgementD={setJudgementA}
         />
       </section>
     );
@@ -162,19 +173,21 @@ const Edit: React.FC<Props> = (props) => {
         </p>
       )}
 
-      {errorLoadingRubic && (
+      {errorLoadingRubric && (
         <p className="error-warning">
-          Sorry we experienced an error loading rubric for number "{examId}".
-          Please try again later.
+          Sorry we experienced an error loading the <em>rubric</em> for exam
+          number "{examId}". Please try again later.
         </p>
       )}
 
-      {examData.examNumber > 0 && <QuestionSection />}
+      {examData.examNumber > 0 && !errorLoadingExam && !errorLoadingRubric && (
+        <QuestionSection />
+      )}
 
       {/* TO REMOVE */}
 
-      <p>ideal best is {idealBest}</p>
-      <p>ideal worst is {idealWorst}</p>
+      <p>situation:- {situation}</p>
+      <p>jA:- {judgementA}</p>
       {/* TO REMOVE */}
     </main>
   );

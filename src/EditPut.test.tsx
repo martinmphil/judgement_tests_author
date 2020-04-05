@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import ScenarioFrame from "./ScenarioFrame";
+import EditPut from "./EditPut";
 
 test("Login renders without crashing", () => {
   const div = document.createElement("div");
   ReactDOM.render(
-    <ScenarioFrame
+    <EditPut
       questionIndex={0}
       situation={"situation"}
       judgements={["", "", "", ""]}

@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { backend } from "./ConfigAssessor";
 
 interface Props {
+  authorization: string;
+  examId: number;
   questionIndex: number;
   situation: string;
   judgements: string[];
@@ -15,16 +18,79 @@ interface Props {
   setJudgementD: (x: string) => void;
 }
 
-const scenarioFrame: React.FC<Props> = (props) => {
-  // const [a, setA] = useState("");
+const EditPut: React.FC<Props> = (props) => {
+  const [newSituation, setNewSituation] = useState(props.situation);
+  const [errrorUploading, setErrrorUploading] = useState(false);
 
   function changeSituation(event: { currentTarget: { value: any } }) {
-    const x = event.currentTarget.value;
-    props.setSituation(x);
+    setNewSituation(event.currentTarget.value);
   }
+
+  const putUpdate = () => {
+    const putBody = {
+      best: props.idealBest,
+      judgements: [
+        props.judgements[0],
+        props.judgements[1],
+        props.judgements[2],
+        props.judgements[3],
+      ],
+      situation: newSituation,
+      worst: props.idealWorst,
+    };
+
+    console.log(props.authorization);
+
+    return fetch(
+      `${backend}exams/${props.examId}/scenario/${props.questionIndex}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: props.authorization,
+        },
+        body: JSON.stringify(putBody),
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          setErrrorUploading(true);
+        } else {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        setErrrorUploading(true);
+        console.error("Error:", error);
+      });
+  };
+
+  const submitQuestion = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    console.log("we pressed it");
+    if (props.idealBest === props.idealWorst) {
+      alert("Please select options for Best and Worst that differ.");
+    } else {
+      console.log("processing your inputted text");
+      putUpdate();
+    }
+  };
 
   return (
     <section>
+      {/* TO REMOVE */}
+      {props.idealBest}
+
+      {errrorUploading && (
+        <p className="error-warning">
+          Sorry we experienced an error up-loading to exam number "
+          {props.examId}". Please try again later.
+        </p>
+      )}
+
       <p>Question index is {props.questionIndex}</p>
 
       <form>
@@ -37,7 +103,7 @@ const scenarioFrame: React.FC<Props> = (props) => {
             id="scenario-text"
             cols={60}
             rows={10}
-            defaultValue={props.situation}
+            defaultValue={newSituation}
             onChange={changeSituation}
           ></textarea>
         </section>
@@ -183,9 +249,10 @@ const scenarioFrame: React.FC<Props> = (props) => {
             <label htmlFor="worstOptD">Option D as Worst</label>
           </p>
         </fieldset>
+        <button onClick={submitQuestion}>Submit question</button>
       </form>
     </section>
   );
 };
 
-export default scenarioFrame;
+export default EditPut;
