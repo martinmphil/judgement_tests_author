@@ -17,7 +17,7 @@ const AddQuestion: React.FC<Props> = (props) => {
   const [newBest, setNewBest] = useState(3);
   const [newWorst, setNewWorst] = useState(0);
 
-  const [errrorUploading, setErrrorUploading] = useState(false);
+  const [errorUploading, setErrorUploading] = useState(false);
 
   const changeSituation = (event: { target: { value: any } }) => {
     setNewSituation(event.target.value);
@@ -48,7 +48,7 @@ const AddQuestion: React.FC<Props> = (props) => {
     // TO REMOVE
     //
     //
-    setErrrorUploading(false);
+    setErrorUploading(false);
     console.log(putBody);
     console.log(backend);
     //
@@ -68,11 +68,11 @@ const AddQuestion: React.FC<Props> = (props) => {
     // )
     //   .then((response) => {
     //     if (!response.ok) {
-    //       setErrrorUploading(true);
+    //       setErrorUploading(true);
     //     }
     //   })
     //   .catch((error) => {
-    //     setErrrorUploading(true);
+    //     setErrorUploading(true);
     //     console.error("Error:", error);
     //   });
     //
@@ -93,7 +93,7 @@ const AddQuestion: React.FC<Props> = (props) => {
     <main>
       <h1>Add Question</h1>
 
-      {errrorUploading && (
+      {errorUploading && (
         <p className="error-warning">
           Sorry we experienced an error up-loading to exam number "{examId}".
           Please try again later.
