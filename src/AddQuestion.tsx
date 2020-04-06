@@ -80,12 +80,12 @@ const AddQuestion: React.FC<Props> = (props) => {
 
   const submitQuestion = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    console.log("we pressed it");
     if (newBest === newWorst) {
       alert("Please select options for Best and Worst that differ.");
     } else {
-      console.log("processing your inputted text");
       putUpdate();
+      window.location.reload();
+      window.scrollTo(0, 0);
     }
   };
 
