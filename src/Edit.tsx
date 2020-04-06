@@ -27,6 +27,7 @@ const Edit: React.FC<Props> = (props) => {
   const [loading, setLoading] = useState(false);
   const [errorLoadingExam, setErrorLoadingExam] = useState(false);
   const [errorLoadingRubric, setErrorLoadingRubric] = useState(false);
+  const [errorDeleting, setErrorDeleting] = useState(false);
   const [examData, setExamData] = useState<IExamData>({
     examNumber: 0,
     title: "",
@@ -116,16 +117,40 @@ const Edit: React.FC<Props> = (props) => {
     }
   }, [examId, props.authorization, questionIndex]);
 
+  const deleting = () => {
+    fetch(`${backend}exams/${examId}/scenario/${questionIndex}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: props.authorization,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          setErrorDeleting(true);
+        } else {
+          window.location.reload();
+        }
+      })
+      .catch((error) => {
+        setErrorDeleting(true);
+        console.error("Error:", error);
+      });
+  };
+
   const QuestionSection = () => {
     return (
       <section>
-        <h1>{examData.title}</h1>
-        <h2>Exam number {examData.examNumber}</h2>
+        <h2>Exam title: {examData.title}</h2>
+        <h3>Exam number: {examData.examNumber}</h3>
         <QuestionPicker
           scenarios={examData.scenarios}
           questionIndex={questionIndex}
           setQuestionIndex={setQuestionIndex}
         />
+        <button onClick={deleting} className="delete-question-button">
+          Delete entire question
+        </button>
         <EditPut
           authorization={props.authorization}
           examId={examId}
@@ -158,6 +183,13 @@ const Edit: React.FC<Props> = (props) => {
         <p className="error-warning">
           Sorry we experienced an error loading the <em>rubric</em> for exam
           number "{examId}". Please try again later.
+        </p>
+      )}
+
+      {errorDeleting && (
+        <p className="error-warning">
+          Sorry we experienced an error deleting question "{questionIndex + 1}"
+          for exam number "{examId}". Please try again later.
         </p>
       )}
 
