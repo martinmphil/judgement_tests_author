@@ -101,8 +101,6 @@ const EditPut: React.FC<Props> = (props) => {
         </p>
       )}
 
-      <p>Question index is {props.questionIndex}</p>
-
       <form>
         <section>
           <h2>Question number {props.questionIndex + 1}</h2>
