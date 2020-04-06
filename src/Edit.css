@@ -1,1 +1,17 @@
+.delete-question-button {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  float: right;
 
+  cursor: pointer;
+  border-radius: 0.5em;
+  padding: 0.4em;
+  color: white;
+  background-color: red;
+  border-color: pink;
+}
+
+.delete-question-button:hover {
+  color: red;
+  background-color: white;
+}

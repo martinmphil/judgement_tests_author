@@ -16,6 +16,7 @@ const AddExam: React.FC<Props> = (props) => {
 
   return (
     <main>
+      <h1>Add Exam</h1>
       <p>
         Add Exam {examId} {backend}
       </p>

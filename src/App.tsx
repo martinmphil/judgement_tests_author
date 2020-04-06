@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 import { backend } from "./ConfigAssessor";
 import Assess from "./Assess";
-import Author from "./Author";
 import Invite from "./Invite";
 import Login from "./Login";
 import Edit from "./Edit";
@@ -28,8 +27,7 @@ const App: React.FC = () => {
       <Router>
         <div className="App">
           <nav>
-            <Link to="/">Assess</Link> | <Link to="/author">Author</Link> |{" "}
-            <Link to="/invite">Invite</Link> |{" "}
+            <Link to="/">Assess</Link> | <Link to="/invite">Invite</Link> |{" "}
             <Link to="/edit-question">Edit Question</Link> |{" "}
             <Link to="/add-question">Add Question</Link> |{" "}
             <Link to="/add-exam">Add Exam</Link> |{" "}
@@ -39,9 +37,6 @@ const App: React.FC = () => {
           <Switch>
             <Route exact path="/">
               <Assess authorization={authorization} />
-            </Route>
-            <Route path="/author">
-              <Author authorization={authorization} />
             </Route>
             <Route path="/invite">
               <Invite authorization={authorization} />

@@ -9,89 +9,95 @@ interface Props {
   judgements: string[];
   idealBest: number;
   idealWorst: number;
-  setIdealBest: (x: number) => void;
-  setIdealWorst: (x: number) => void;
-  setSituation: (x: string) => void;
-  setJudgementA: (x: string) => void;
-  setJudgementB: (x: string) => void;
-  setJudgementC: (x: string) => void;
-  setJudgementD: (x: string) => void;
 }
 
 const EditPut: React.FC<Props> = (props) => {
   const [newSituation, setNewSituation] = useState(props.situation);
+  const [newJudgementA, setNewJudgementA] = useState(props.judgements[0]);
+  const [newJudgementB, setNewJudgementB] = useState(props.judgements[1]);
+  const [newJudgementC, setNewJudgementC] = useState(props.judgements[2]);
+  const [newJudgementD, setNewJudgementD] = useState(props.judgements[3]);
+  const [newBest, setNewBest] = useState(props.idealBest);
+  const [newWorst, setNewWorst] = useState(props.idealWorst);
+
   const [errrorUploading, setErrrorUploading] = useState(false);
 
-  function changeSituation(event: { currentTarget: { value: any } }) {
-    setNewSituation(event.currentTarget.value);
-  }
+  const changeSituation = (event: { target: { value: any } }) => {
+    setNewSituation(event.target.value);
+  };
+  const changeJudgementA = (event: { target: { value: any } }) => {
+    setNewJudgementA(event.target.value);
+  };
+  const changeJudgementB = (event: { target: { value: any } }) => {
+    setNewJudgementB(event.target.value);
+  };
+  const changeJudgementC = (event: { target: { value: any } }) => {
+    setNewJudgementC(event.target.value);
+  };
+  const changeJudgementD = (event: { target: { value: any } }) => {
+    setNewJudgementD(event.target.value);
+  };
 
   const putUpdate = () => {
     const putBody = {
-      best: props.idealBest,
-      judgements: [
-        props.judgements[0],
-        props.judgements[1],
-        props.judgements[2],
-        props.judgements[3],
-      ],
       situation: newSituation,
-      worst: props.idealWorst,
+      best: newBest,
+      worst: newWorst,
+      judgements: [newJudgementA, newJudgementB, newJudgementC, newJudgementD],
     };
 
-    console.log(props.authorization);
+    //
+    //
+    // TO REMOVE
+    //
+    //
+    setErrrorUploading(false);
+    console.log(putBody);
+    console.log(backend);
+    //
+    //
+    //
 
-    return fetch(
-      `${backend}exams/${props.examId}/scenario/${props.questionIndex}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: props.authorization,
-        },
-        body: JSON.stringify(putBody),
-      }
-    )
-      .then((response) => {
-        if (!response.ok) {
-          setErrrorUploading(true);
-        } else {
-          return response.json();
-        }
-      })
-      .then((data) => {
-        return data;
-      })
-      .catch((error) => {
-        setErrrorUploading(true);
-        console.error("Error:", error);
-      });
+    // return fetch(
+    //   `${backend}exams/${props.examId}/scenario/${props.questionIndex}`,
+    //   {
+    //     method: "PUT",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       authorization: props.authorization,
+    //     },
+    //     body: JSON.stringify(putBody),
+    //   }
+    // )
+    //   .then((response) => {
+    //     if (!response.ok) {
+    //       setErrrorUploading(true);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     setErrrorUploading(true);
+    //     console.error("Error:", error);
+    //   });
+    //
   };
 
   const submitQuestion = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    console.log("we pressed it");
-    if (props.idealBest === props.idealWorst) {
+    if (newBest === newWorst) {
       alert("Please select options for Best and Worst that differ.");
     } else {
-      console.log("processing your inputted text");
       putUpdate();
     }
   };
 
   return (
     <section>
-      {/* TO REMOVE */}
-      {props.idealBest}
-
       {errrorUploading && (
         <p className="error-warning">
           Sorry we experienced an error up-loading to exam number "
           {props.examId}". Please try again later.
         </p>
       )}
-
-      <p>Question index is {props.questionIndex}</p>
 
       <form>
         <section>
@@ -117,7 +123,8 @@ const EditPut: React.FC<Props> = (props) => {
             id="optA"
             cols={60}
             rows={4}
-            defaultValue={props.judgements[0]}
+            defaultValue={newJudgementA}
+            onChange={changeJudgementA}
           ></textarea>
           <br />
 
@@ -128,7 +135,8 @@ const EditPut: React.FC<Props> = (props) => {
             id="optB"
             cols={60}
             rows={4}
-            defaultValue={props.judgements[1]}
+            defaultValue={newJudgementB}
+            onChange={changeJudgementB}
           ></textarea>
           <br />
 
@@ -139,7 +147,8 @@ const EditPut: React.FC<Props> = (props) => {
             id="optC"
             cols={60}
             rows={4}
-            defaultValue={props.judgements[2]}
+            defaultValue={newJudgementC}
+            onChange={changeJudgementC}
           ></textarea>
           <br />
 
@@ -150,7 +159,8 @@ const EditPut: React.FC<Props> = (props) => {
             id="optD"
             cols={60}
             rows={4}
-            defaultValue={props.judgements[3]}
+            defaultValue={newJudgementD}
+            onChange={changeJudgementD}
           ></textarea>
         </fieldset>
 
@@ -162,8 +172,8 @@ const EditPut: React.FC<Props> = (props) => {
               id="bestOptA"
               name="best"
               value="0"
-              checked={props.idealBest === 0 ? true : false}
-              onChange={() => props.setIdealBest(0)}
+              checked={newBest === 0 ? true : false}
+              onChange={() => setNewBest(0)}
             />
             <label htmlFor="bestOptA">Option A as Best</label>
           </p>
@@ -173,8 +183,8 @@ const EditPut: React.FC<Props> = (props) => {
               id="bestOptB"
               name="best"
               value="1"
-              checked={props.idealBest === 1 ? true : false}
-              onChange={() => props.setIdealBest(1)}
+              checked={newBest === 1 ? true : false}
+              onChange={() => setNewBest(1)}
             />
             <label htmlFor="bestOptB">Option B as Best</label>
           </p>
@@ -184,8 +194,8 @@ const EditPut: React.FC<Props> = (props) => {
               id="bestOptC"
               name="best"
               value="2"
-              checked={props.idealBest === 2 ? true : false}
-              onChange={() => props.setIdealBest(2)}
+              checked={newBest === 2 ? true : false}
+              onChange={() => setNewBest(2)}
             />
             <label htmlFor="bestOptC">Option C as Best</label>
           </p>
@@ -195,8 +205,8 @@ const EditPut: React.FC<Props> = (props) => {
               id="bestOptD"
               name="best"
               value="3"
-              checked={props.idealBest === 3 ? true : false}
-              onChange={() => props.setIdealBest(3)}
+              checked={newBest === 3 ? true : false}
+              onChange={() => setNewBest(3)}
             />
             <label htmlFor="bestOptD">Option D as Best</label>
           </p>
@@ -210,8 +220,8 @@ const EditPut: React.FC<Props> = (props) => {
               id="worstOptA"
               name="worst"
               value="0"
-              checked={props.idealWorst === 0 ? true : false}
-              onChange={() => props.setIdealWorst(0)}
+              checked={newWorst === 0 ? true : false}
+              onChange={() => setNewWorst(0)}
             />
             <label htmlFor="worstOptA">Option A as Worst</label>
           </p>
@@ -221,8 +231,8 @@ const EditPut: React.FC<Props> = (props) => {
               id="worstOptB"
               name="worst"
               value="1"
-              checked={props.idealWorst === 1 ? true : false}
-              onChange={() => props.setIdealWorst(1)}
+              checked={newWorst === 1 ? true : false}
+              onChange={() => setNewWorst(1)}
             />
             <label htmlFor="worstOptB">Option B as Worst</label>
           </p>
@@ -232,8 +242,8 @@ const EditPut: React.FC<Props> = (props) => {
               id="worstOptC"
               name="worst"
               value="2"
-              checked={props.idealWorst === 2 ? true : false}
-              onChange={() => props.setIdealWorst(2)}
+              checked={newWorst === 2 ? true : false}
+              onChange={() => setNewWorst(2)}
             />
             <label htmlFor="worstOptC">Option C as Worst</label>
           </p>
@@ -243,13 +253,13 @@ const EditPut: React.FC<Props> = (props) => {
               id="worstOptD"
               name="worst"
               value="3"
-              checked={props.idealWorst === 3 ? true : false}
-              onChange={() => props.setIdealWorst(3)}
+              checked={newWorst === 3 ? true : false}
+              onChange={() => setNewWorst(3)}
             />
             <label htmlFor="worstOptD">Option D as Worst</label>
           </p>
         </fieldset>
-        <button onClick={submitQuestion}>Submit question</button>
+        <button onClick={submitQuestion}>Save changes</button>
       </form>
     </section>
   );
