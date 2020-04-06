@@ -51,34 +51,33 @@ const EditPut: React.FC<Props> = (props) => {
     // TO REMOVE
     //
     //
-    setErrrorUploading(false);
-    console.log(putBody);
-    console.log(backend);
+    // setErrrorUploading(false);
+    // console.log(putBody);
+    // console.log(backend);
     //
     //
     //
 
-    // return fetch(
-    //   `${backend}exams/${props.examId}/scenario/${props.questionIndex}`,
-    //   {
-    //     method: "PUT",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       authorization: props.authorization,
-    //     },
-    //     body: JSON.stringify(putBody),
-    //   }
-    // )
-    //   .then((response) => {
-    //     if (!response.ok) {
-    //       setErrrorUploading(true);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     setErrrorUploading(true);
-    //     console.error("Error:", error);
-    //   });
-    //
+    return fetch(
+      `${backend}exams/${props.examId}/scenario/${props.questionIndex}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: props.authorization,
+        },
+        body: JSON.stringify(putBody),
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          setErrrorUploading(true);
+        }
+      })
+      .catch((error) => {
+        setErrrorUploading(true);
+        console.error("Error:", error);
+      });
   };
 
   const submitQuestion = (event: { preventDefault: () => void }) => {
@@ -87,6 +86,7 @@ const EditPut: React.FC<Props> = (props) => {
       alert("Please select options for Best and Worst that differ.");
     } else {
       putUpdate();
+      window.scrollTo(0, 0);
     }
   };
 
