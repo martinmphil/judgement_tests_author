@@ -261,7 +261,7 @@ const EditPut: React.FC<Props> = (props) => {
             <label htmlFor="worstOptD">Option D as Worst</label>
           </p>
         </fieldset>
-        <button onClick={submitQuestion}>Submit question</button>
+        <button onClick={submitQuestion}>Save changes</button>
       </form>
     </section>
   );
