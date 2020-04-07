@@ -16,7 +16,7 @@ const AddQuestion: React.FC<Props> = (props) => {
   const [newJudgementD, setNewJudgementD] = useState("");
   const [newBest, setNewBest] = useState(3);
   const [newWorst, setNewWorst] = useState(0);
-
+  const [upLoading, setUpLoading] = useState(false);
   const [errorUploading, setErrorUploading] = useState(false);
 
   const changeSituation = (event: { target: { value: any } }) => {
@@ -36,23 +36,14 @@ const AddQuestion: React.FC<Props> = (props) => {
   };
 
   const putUpdate = () => {
+    setUpLoading(true);
+
     const putBody = {
       situation: newSituation,
       best: newBest,
       worst: newWorst,
       judgements: [newJudgementA, newJudgementB, newJudgementC, newJudgementD],
     };
-
-    //
-    // TO REMOVE
-    //
-    //
-    // setErrorUploading(false);
-    // console.log(putBody);
-    // console.log(backend);
-    //
-    //
-    //
 
     return fetch(`${backend}exams/${examId}/scenario`, {
       method: "POST",
@@ -65,6 +56,7 @@ const AddQuestion: React.FC<Props> = (props) => {
       .then((response) => {
         if (!response.ok) {
           setErrorUploading(true);
+          setUpLoading(false);
         } else {
           window.location.reload();
           window.scrollTo(0, 0);
@@ -73,8 +65,8 @@ const AddQuestion: React.FC<Props> = (props) => {
       .catch((error) => {
         setErrorUploading(true);
         console.error("Error:", error);
+        setUpLoading(false);
       });
-    //
   };
 
   const submitQuestion = (event: { preventDefault: () => void }) => {
@@ -263,7 +255,10 @@ const AddQuestion: React.FC<Props> = (props) => {
                 <label htmlFor="worstOptD">Option D as Worst</label>
               </p>
             </fieldset>
-            <button onClick={submitQuestion}>Submit question</button>
+            {upLoading && <p>Up loading...</p>}
+            <button type="submit" onClick={submitQuestion}>
+              Submit question
+            </button>
           </form>
         </section>
       )}

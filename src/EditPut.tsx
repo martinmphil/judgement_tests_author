@@ -19,7 +19,7 @@ const EditPut: React.FC<Props> = (props) => {
   const [newJudgementD, setNewJudgementD] = useState(props.judgements[3]);
   const [newBest, setNewBest] = useState(props.idealBest);
   const [newWorst, setNewWorst] = useState(props.idealWorst);
-
+  const [upLoading, setUpLoading] = useState(false);
   const [errrorUploading, setErrrorUploading] = useState(false);
 
   const changeSituation = (event: { target: { value: any } }) => {
@@ -39,24 +39,14 @@ const EditPut: React.FC<Props> = (props) => {
   };
 
   const putUpdate = () => {
+    setUpLoading(true);
+
     const putBody = {
       situation: newSituation,
       best: newBest,
       worst: newWorst,
       judgements: [newJudgementA, newJudgementB, newJudgementC, newJudgementD],
     };
-
-    //
-    //
-    // TO REMOVE
-    //
-    //
-    // setErrrorUploading(false);
-    // console.log(putBody);
-    // console.log(backend);
-    //
-    //
-    //
 
     return fetch(
       `${backend}exams/${props.examId}/scenario/${props.questionIndex}`,
@@ -72,11 +62,14 @@ const EditPut: React.FC<Props> = (props) => {
       .then((response) => {
         if (!response.ok) {
           setErrrorUploading(true);
+        } else {
+          setUpLoading(false);
         }
       })
       .catch((error) => {
         setErrrorUploading(true);
         console.error("Error:", error);
+        setUpLoading(false);
       });
   };
 
@@ -98,6 +91,8 @@ const EditPut: React.FC<Props> = (props) => {
           {props.examId}". Please try again later.
         </p>
       )}
+
+      {upLoading && <p>Up loading...</p>}
 
       <form>
         <section>
