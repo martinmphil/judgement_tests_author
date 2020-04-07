@@ -6,7 +6,7 @@ interface Props {
   loginUrl: string;
 }
 
-const Login: React.FC<Props> = props => {
+const Login: React.FC<Props> = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorLoggingIn, setErrorLoggingIn] = useState(false);
@@ -23,11 +23,11 @@ const Login: React.FC<Props> = props => {
     fetch(props.loginUrl, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ username, password }),
     })
-      .then(response => {
+      .then((response) => {
         const authorization = response.headers.get("authorization");
 
         if (authorization) {
@@ -41,7 +41,7 @@ const Login: React.FC<Props> = props => {
           props.setLicit(true);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         setErrorLoggingIn(true);
         console.error("Login error: ", error);
       });
@@ -59,7 +59,7 @@ const Login: React.FC<Props> = props => {
             name="username"
             type="text"
             value={username}
-            onChange={e => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </p>
         <p>
@@ -69,7 +69,7 @@ const Login: React.FC<Props> = props => {
             name="password"
             type="password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </p>
         <button disabled={!validateForm()} type="submit" onClick={handleSubmit}>
@@ -78,7 +78,7 @@ const Login: React.FC<Props> = props => {
       </form>
 
       {errorLoggingIn && (
-        <p>
+        <p className="error-warning">
           Sorry we encountered a login error. Please refresh this page and try
           again later.
         </p>
