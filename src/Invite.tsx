@@ -42,8 +42,8 @@ const Assessor: React.FC<Props> = (props) => {
         <form>
           <h3>Single invitee for exam number {examId}</h3>
           <fieldset>
-            <legend>Please enter name and email:- </legend>
-            <label htmlFor="name">Candidate name</label>
+            <legend>Please enter name and email</legend>
+            <label htmlFor="name">Candidate name:- </label>
             <input
               value={singleName}
               onChange={changeName}
