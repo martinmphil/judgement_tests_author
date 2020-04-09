@@ -75,7 +75,7 @@ const Assessor: React.FC<Props> = (props) => {
               </a>{" "}
               for lastname, firstname, email
             </legend>
-            <label htmlFor="invitees">invitees</label>
+            <label htmlFor="invitees">Invitees:- </label> <br />
             <textarea
               name="invitees"
               id="invitees"
