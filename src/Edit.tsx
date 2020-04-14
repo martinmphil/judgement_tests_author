@@ -148,9 +148,11 @@ const Edit: React.FC<Props> = (props) => {
           questionIndex={questionIndex}
           setQuestionIndex={setQuestionIndex}
         />
-        <button onClick={deleting} className="delete-question-button">
-          Delete entire question
-        </button>
+        {questionIndex === examData.scenarios.length - 1 && (
+          <button onClick={deleting} className="delete-question-button">
+            Delete entire question
+          </button>
+        )}
         <EditPut
           authorization={props.authorization}
           examId={examId}
