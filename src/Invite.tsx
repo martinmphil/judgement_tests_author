@@ -10,6 +10,7 @@ const Assessor: React.FC<Props> = (props) => {
   const [examId, setExamId] = useState(0);
   const [singleName, setSingleName] = useState("");
   const [singleEmail, setSingleEmail] = useState("");
+  const [singleSent, setSingleSent] = useState(false);
   const [errorSingleInvite, setErrorSingleInvite] = useState(false);
   const [batchInvitees, setBatchInvitees] = useState("");
 
@@ -28,51 +29,46 @@ const Assessor: React.FC<Props> = (props) => {
   const singleInvite = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    // IF EXAM ID AND NAME AND EMAL THEN
-
-    const postBody = [
-      {
-        email: singleEmail,
-        name: singleName,
-      },
-    ];
-
-    fetch(`${backend}candidates/send-invite-email/${examId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: props.authorization,
-      },
-      body: JSON.stringify(postBody),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          setErrorSingleInvite(true);
-          console.log(response.json());
-        }
+    if (examId > 0 && singleName.length > 0 && singleEmail.length > 0) {
+      fetch(`${backend}candidates/send-invite-email/${examId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: props.authorization,
+        },
+        body: JSON.stringify([
+          {
+            email: singleEmail,
+            name: singleName,
+          },
+        ]),
       })
-      .catch((error) => {
-        setErrorSingleInvite(true);
-        console.error("Error:", error);
-      });
+        .then((response) => {
+          if (!response.ok) {
+            setErrorSingleInvite(true);
+            console.log(response.json());
+          } else {
+            setSingleSent(true);
+          }
+        })
+        .catch((error) => {
+          setErrorSingleInvite(true);
+          console.error("Error:", error);
+        });
+    } else {
+      setErrorSingleInvite(true);
+    }
   };
 
   return (
     <main>
       <h1>Invite</h1>
       <ExamPicker setExamId={setExamId} authorization={props.authorization} />
-      <hr />
-
-      {/* TO RMEOVE */}
-      <p>Current exam is {examId}</p>
-      <p>Base url is {backend} </p>
-      <hr />
-      {/* TO RMEOVE */}
 
       {errorSingleInvite && (
-        <p>
-          Sorry we experienced an error sending a single invite to {singleName}{" "}
-          for exam number {examId}.
+        <p className="error-warning">
+          Sorry we experienced an error sending a single invite to "{singleName}
+          " for exam number {examId}.
         </p>
       )}
 
@@ -106,6 +102,12 @@ const Assessor: React.FC<Props> = (props) => {
             </div>
           </fieldset>
         </form>
+      )}
+
+      {singleSent && (
+        <p className="success-message">
+          Your invite to "{singleName}" for exam number {examId} has been sent.
+        </p>
       )}
 
       {examId > 0 && (
