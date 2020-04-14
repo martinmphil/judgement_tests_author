@@ -10,6 +10,7 @@ const Assessor: React.FC<Props> = (props) => {
   const [examId, setExamId] = useState(0);
   const [singleName, setSingleName] = useState("");
   const [singleEmail, setSingleEmail] = useState("");
+  const [errorSingleInvite, setErrorSingleInvite] = useState(false);
   const [batchInvitees, setBatchInvitees] = useState("");
 
   const changeName = (event: { target: { value: any } }) => {
@@ -24,6 +25,38 @@ const Assessor: React.FC<Props> = (props) => {
     setBatchInvitees(event.target.value);
   };
 
+  const singleInvite = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+
+    // IF EXAM ID AND NAME AND EMAL THEN
+
+    const postBody = [
+      {
+        email: singleEmail,
+        name: singleName,
+      },
+    ];
+
+    fetch(`${backend}candidates/send-invite-email/${examId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: props.authorization,
+      },
+      body: JSON.stringify(postBody),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          setErrorSingleInvite(true);
+          console.log(response.json());
+        }
+      })
+      .catch((error) => {
+        setErrorSingleInvite(true);
+        console.error("Error:", error);
+      });
+  };
+
   return (
     <main>
       <h1>Invite</h1>
@@ -36,10 +69,17 @@ const Assessor: React.FC<Props> = (props) => {
       <hr />
       {/* TO RMEOVE */}
 
+      {errorSingleInvite && (
+        <p>
+          Sorry we experienced an error sending a single invite to {singleName}{" "}
+          for exam number {examId}.
+        </p>
+      )}
+
       {examId > 0 && <h2>Exam number {examId}</h2>}
 
       {examId > 0 && (
-        <form>
+        <form onSubmit={singleInvite}>
           <h3>Single invitee for exam number {examId}</h3>
           <fieldset>
             <legend>Please enter name and email</legend>
@@ -60,6 +100,10 @@ const Assessor: React.FC<Props> = (props) => {
               id="email"
               name="email"
             ></input>
+            <div>
+              <button type="submit">Send</button>
+              <span>single invite to:- {singleName}</span>
+            </div>
           </fieldset>
         </form>
       )}
