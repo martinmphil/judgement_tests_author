@@ -12,7 +12,12 @@ const Assessor: React.FC<Props> = (props) => {
   const [singleEmail, setSingleEmail] = useState("");
   const [singleSent, setSingleSent] = useState(false);
   const [errorSingleInvite, setErrorSingleInvite] = useState(false);
-  const [batchInvitees, setBatchInvitees] = useState("");
+  const [batchInvitees, setBatchInvitees] = useState([
+    {
+      email: "",
+      name: "",
+    },
+  ]);
 
   const changeName = (event: { target: { value: any } }) => {
     setSingleName(event.target.value);
@@ -28,7 +33,6 @@ const Assessor: React.FC<Props> = (props) => {
 
   const singleInvite = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-
     if (examId > 0 && singleName.length > 0 && singleEmail.length > 0) {
       fetch(`${backend}candidates/send-invite-email/${examId}`, {
         method: "POST",
@@ -59,6 +63,31 @@ const Assessor: React.FC<Props> = (props) => {
       setErrorSingleInvite(true);
     }
   };
+
+  const batchInvite = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+
+    const csvStr = `a,b,c
+    1,2,3
+    4,5,6
+    7,8,9`;
+    const csv = require("csvtojson");
+    csv()
+      .fromString(csvStr)
+      .then((jsonObj: any) => {
+        console.log(jsonObj);
+      });
+  };
+
+  //
+  // csv
+
+  // const csvFilePath = "TESTcsv.csv";
+
+  // const jsonArray=await csv().fromFile(csvFilePath);
+
+  //
+  //
 
   return (
     <main>
@@ -111,28 +140,37 @@ const Assessor: React.FC<Props> = (props) => {
       )}
 
       {examId > 0 && (
-        <form>
+        <form onSubmit={batchInvite}>
           <h3>Batch invitees for exam number {examId}</h3>
           <fieldset>
             <legend>
-              Please enter{" "}
+              Please create a{" "}
               <a href="https://en.wikipedia.org/wiki/Comma-separated_values">
-                CSV
+                .csv
               </a>{" "}
-              for lastname, firstname, email
+              file containing data only under three column headings "lastname",
+              "firstname" and "email".
             </legend>
-            <label htmlFor="invitees">Invitees:- </label> <br />
-            <textarea
-              name="invitees"
+            <label htmlFor="invitees">
+              Select your .csv file, then press submit.
+            </label>{" "}
+            <br />
+            <input
+              type="file"
               id="invitees"
-              cols={80}
-              rows={20}
-              defaultValue={batchInvitees}
-              onChange={changeInvitees}
-            ></textarea>
+              name="invitees"
+              accept=".csv"
+            ></input>
+            <button type="submit">Submit</button>
           </fieldset>
         </form>
       )}
+
+      {/* TO REMOVE */}
+
+      {console.log(batchInvitees)}
+
+      {/* TO REMOVE */}
     </main>
   );
 };
