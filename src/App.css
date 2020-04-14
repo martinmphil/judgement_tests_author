@@ -26,6 +26,11 @@ button[type="submit"] {
   color: hsl(0, 100%, 50%);
 }
 
+.success-message {
+  color: hsl(150, 80%, 40%);
+  font-weight: bold;
+}
+
 /* introduce magins at widths > 20em */
 @media only screen and (min-width: 20em) {
   .App {
