@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { backend } from "./ConfigAssessor";
 import ExamPicker from "./ExamPicker";
-import csv from "csvtojson";
-// npmjs.com/package/csvtojson
+import csv from "csvtojson"; // npmjs.com/package/csvtojson
 
 interface Props {
   authorization: string;
@@ -14,17 +13,14 @@ const Assessor: React.FC<Props> = (props) => {
   const [singleEmail, setSingleEmail] = useState("");
   const [singleSent, setSingleSent] = useState(false);
   const [errorSingleInvite, setErrorSingleInvite] = useState(false);
+  const [errorBatchInvite, setErrorBatchInvite] = useState(false);
+  const [batchSent, setBatchSent] = useState(false);
   const [batchInvitees, setBatchInvitees] = useState([
     {
       email: "",
       name: "",
     },
   ]);
-
-  //
-  //
-  // TEST
-  const [foo, setFoo] = useState();
 
   const changeName = (event: { target: { value: any } }) => {
     setSingleName(event.target.value);
@@ -33,10 +29,6 @@ const Assessor: React.FC<Props> = (props) => {
   const changeEmail = (event: { target: { value: any } }) => {
     setSingleEmail(event.target.value);
   };
-
-  // const changeInvitees = (event: { target: { value: any } }) => {
-  //   setBatchInvitees(event.target.value);
-  // };
 
   const singleInvite = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -83,7 +75,6 @@ const Assessor: React.FC<Props> = (props) => {
         let x = e.target.result?.toString();
 
         if (x) {
-          // debugger;
           csv({
             noheader: true,
             output: "csv",
@@ -94,30 +85,13 @@ const Assessor: React.FC<Props> = (props) => {
                 return { email: y[2], name: `${y[1]} ${y[0]}` };
               });
               setBatchInvitees(data);
-              setFoo(csvRow[0][0]);
-              console.log(csvRow); // => [["1","2","3"], ["4","5","6"], ["7","8","9"]]
             });
-
-          // const allTextLines = x
-          //   .split(/\r\n|\n/)
-          //   .filter((elem) => elem.length > 1);
-
-          // const jj = allTextLines.map((y) => y.split(","));
-
-          // // const jj = allTextLines[0].split(",");
-          // //
-          // //
-          // console.log(jj);
         }
-
-        // console.log(x);
       }
     };
   };
 
   const batchInvite = () => {
-    // need hooks for batch error and batch sent status
-
     if (examId > 0 && batchInvitees[0].email.length > 1) {
       fetch(`${backend}candidates/send-invite-email/${examId}`, {
         method: "POST",
@@ -129,18 +103,18 @@ const Assessor: React.FC<Props> = (props) => {
       })
         .then((response) => {
           if (!response.ok) {
-            setErrorSingleInvite(true);
+            setErrorBatchInvite(true);
             console.log(response.json());
           } else {
-            setSingleSent(true);
+            setBatchSent(true);
           }
         })
         .catch((error) => {
-          setErrorSingleInvite(true);
+          setErrorBatchInvite(true);
           console.error("Error:", error);
         });
     } else {
-      setErrorSingleInvite(true);
+      setErrorBatchInvite(true);
     }
   };
 
@@ -203,11 +177,11 @@ const Assessor: React.FC<Props> = (props) => {
               <a href="https://en.wikipedia.org/wiki/Comma-separated_values">
                 .csv
               </a>{" "}
-              file containing data only under three column headings: "Surname",
-              "Firstname" and "Email".
+              file with three columns containing only the data for surname,
+              firstname and email.
             </legend>
             <label htmlFor="invitees">
-              Select your .csv file, then press submit.
+              Press the button below to select your .csv file.
             </label>{" "}
             <br />
             <input
@@ -217,9 +191,21 @@ const Assessor: React.FC<Props> = (props) => {
               accept=".csv"
               onChange={(event) => readCsv(event)}
             ></input>
-            {/* <button type="submit">Submit</button> */}
           </fieldset>
         </form>
+      )}
+
+      {errorBatchInvite && (
+        <p className="error-warning">
+          Sorry we experienced an error sending a batch invite for exam number{" "}
+          {examId}.
+        </p>
+      )}
+
+      {batchSent && (
+        <p className="success-message">
+          Your batch invite for exam number {examId} has been sent.
+        </p>
       )}
 
       {batchInvitees[0].email.length > 1 && (
@@ -228,17 +214,28 @@ const Assessor: React.FC<Props> = (props) => {
             <button type="button" onClick={batchInvite}>
               Invite
             </button>{" "}
-            the following people to exam number {examId}.
+            the following people to exam number {examId}
           </p>
 
-          <p>This is it {batchInvitees[0].email}</p>
+          <table>
+            <caption>Batch invitees</caption>
+            <tbody>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">E-mail</th>
+              </tr>
+              {batchInvitees.map((x) => {
+                return (
+                  <tr key={x.email}>
+                    <td>{x.name}</td>
+                    <td>{x.email}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       )}
-
-      {/* TO REMOVE */}
-      <p>Foo is {foo} </p>
-
-      {/* TO REMOVE */}
     </main>
   );
 };
