@@ -32,7 +32,6 @@ const AddExam: React.FC<Props> = (props) => {
           setErrorAddingExam(true);
         } else {
           setShowOutro(true);
-          console.log("is it time to show outro?");
           return response.json();
         }
       })
