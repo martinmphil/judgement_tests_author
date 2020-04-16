@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { backend } from "./ConfigAssessor";
 import ExamPicker from "./ExamPicker";
+import csv from "csvtojson";
+// npmjs.com/package/csvtojson
 
 interface Props {
   authorization: string;
@@ -19,6 +21,11 @@ const Assessor: React.FC<Props> = (props) => {
     },
   ]);
 
+  //
+  //
+  // TEST
+  const [foo, setFoo] = useState();
+
   const changeName = (event: { target: { value: any } }) => {
     setSingleName(event.target.value);
   };
@@ -27,9 +34,9 @@ const Assessor: React.FC<Props> = (props) => {
     setSingleEmail(event.target.value);
   };
 
-  const changeInvitees = (event: { target: { value: any } }) => {
-    setBatchInvitees(event.target.value);
-  };
+  // const changeInvitees = (event: { target: { value: any } }) => {
+  //   setBatchInvitees(event.target.value);
+  // };
 
   const singleInvite = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -64,30 +71,78 @@ const Assessor: React.FC<Props> = (props) => {
     }
   };
 
-  const batchInvite = (event: { preventDefault: () => void }) => {
+  const readCsv = (event: any) => {
     event.preventDefault();
 
-    const csvStr = `a,b,c
-    1,2,3
-    4,5,6
-    7,8,9`;
-    const csv = require("csvtojson");
-    csv()
-      .fromString(csvStr)
-      .then((jsonObj: any) => {
-        console.log(jsonObj);
-      });
+    const reader = new FileReader();
+
+    reader.readAsText(event.target.files[0]);
+
+    reader.onload = function(e) {
+      if (e.target) {
+        let x = e.target.result?.toString();
+
+        if (x) {
+          // debugger;
+          csv({
+            noheader: true,
+            output: "csv",
+          })
+            .fromString(x)
+            .then((csvRow) => {
+              const data = csvRow.map((y) => {
+                return { email: y[2], name: `${y[1]} ${y[0]}` };
+              });
+              setBatchInvitees(data);
+              setFoo(csvRow[0][0]);
+              console.log(csvRow); // => [["1","2","3"], ["4","5","6"], ["7","8","9"]]
+            });
+
+          // const allTextLines = x
+          //   .split(/\r\n|\n/)
+          //   .filter((elem) => elem.length > 1);
+
+          // const jj = allTextLines.map((y) => y.split(","));
+
+          // // const jj = allTextLines[0].split(",");
+          // //
+          // //
+          // console.log(jj);
+        }
+
+        // console.log(x);
+      }
+    };
   };
 
-  //
-  // csv
+  const batchInvite = () => {
+    // need hooks for batch error and batch sent status
 
-  // const csvFilePath = "TESTcsv.csv";
-
-  // const jsonArray=await csv().fromFile(csvFilePath);
-
-  //
-  //
+    if (examId > 0 && batchInvitees[0].email.length > 1) {
+      fetch(`${backend}candidates/send-invite-email/${examId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: props.authorization,
+        },
+        body: JSON.stringify(batchInvitees),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            setErrorSingleInvite(true);
+            console.log(response.json());
+          } else {
+            setSingleSent(true);
+          }
+        })
+        .catch((error) => {
+          setErrorSingleInvite(true);
+          console.error("Error:", error);
+        });
+    } else {
+      setErrorSingleInvite(true);
+    }
+  };
 
   return (
     <main>
@@ -140,7 +195,7 @@ const Assessor: React.FC<Props> = (props) => {
       )}
 
       {examId > 0 && (
-        <form onSubmit={batchInvite}>
+        <form>
           <h3>Batch invitees for exam number {examId}</h3>
           <fieldset>
             <legend>
@@ -148,8 +203,8 @@ const Assessor: React.FC<Props> = (props) => {
               <a href="https://en.wikipedia.org/wiki/Comma-separated_values">
                 .csv
               </a>{" "}
-              file containing data only under three column headings "lastname",
-              "firstname" and "email".
+              file containing data only under three column headings: "Surname",
+              "Firstname" and "Email".
             </legend>
             <label htmlFor="invitees">
               Select your .csv file, then press submit.
@@ -160,15 +215,28 @@ const Assessor: React.FC<Props> = (props) => {
               id="invitees"
               name="invitees"
               accept=".csv"
+              onChange={(event) => readCsv(event)}
             ></input>
-            <button type="submit">Submit</button>
+            {/* <button type="submit">Submit</button> */}
           </fieldset>
         </form>
       )}
 
-      {/* TO REMOVE */}
+      {batchInvitees[0].email.length > 1 && (
+        <div>
+          <p>
+            <button type="button" onClick={batchInvite}>
+              Invite
+            </button>{" "}
+            the following people to exam number {examId}.
+          </p>
 
-      {console.log(batchInvitees)}
+          <p>This is it {batchInvitees[0].email}</p>
+        </div>
+      )}
+
+      {/* TO REMOVE */}
+      <p>Foo is {foo} </p>
 
       {/* TO REMOVE */}
     </main>
