@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import "./AddExam.css";
 import { backend } from "./ConfigAssessor";
-
-//
-// NB
-// use Context to set exam number across app
 
 interface Props {
   authorization: string;
@@ -76,8 +71,6 @@ const AddExam: React.FC<Props> = (props) => {
           later.
         </p>
       )}
-
-      {/* Add input for title here */}
 
       <section>
         <label htmlFor="title">Please enter your exam title: </label>

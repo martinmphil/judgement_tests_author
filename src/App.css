@@ -31,6 +31,13 @@ button[type="submit"] {
   font-weight: bold;
 }
 
+th,
+td {
+  /* border-width: thin; */
+  border: 1px solid grey;
+  padding: 0.3em;
+}
+
 /* introduce magins at widths > 20em */
 @media only screen and (min-width: 20em) {
   .App {
