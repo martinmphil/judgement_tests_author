@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./AddQuestion.css";
 import { backend } from "./ConfigAssessor";
 import ExamPicker from "./ExamPicker";
 

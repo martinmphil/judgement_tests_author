@@ -4,9 +4,6 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 
 import App from "./App";
-// import App from "./App" // [to build candidates app]
-// import App from "./AssessorApp" //[to build assessors app]
-// import App from "./AuthorApp" //[to build authors app]
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

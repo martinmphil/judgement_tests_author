@@ -14,6 +14,7 @@ const Assessor: React.FC<Props> = (props) => {
   const [singleSent, setSingleSent] = useState(false);
   const [errorSingleInvite, setErrorSingleInvite] = useState(false);
   const [errorBatchInvite, setErrorBatchInvite] = useState(false);
+  const [isBatchInviting, setIsBatchInviting] = useState(false);
   const [batchSent, setBatchSent] = useState(false);
   const [batchInvitees, setBatchInvitees] = useState([
     {
@@ -93,6 +94,7 @@ const Assessor: React.FC<Props> = (props) => {
 
   const batchInvite = () => {
     if (examId > 0 && batchInvitees[0].email.length > 1) {
+      setIsBatchInviting(true);
       fetch(`${backend}candidates/send-invite-email/${examId}`, {
         method: "POST",
         headers: {
@@ -102,6 +104,7 @@ const Assessor: React.FC<Props> = (props) => {
         body: JSON.stringify(batchInvitees),
       })
         .then((response) => {
+          setIsBatchInviting(false);
           if (!response.ok) {
             setErrorBatchInvite(true);
             console.log(response.json());
@@ -110,10 +113,12 @@ const Assessor: React.FC<Props> = (props) => {
           }
         })
         .catch((error) => {
+          setIsBatchInviting(false);
           setErrorBatchInvite(true);
           console.error("Error:", error);
         });
     } else {
+      setIsBatchInviting(false);
       setErrorBatchInvite(true);
     }
   };
@@ -199,6 +204,12 @@ const Assessor: React.FC<Props> = (props) => {
         <p className="error-warning">
           Sorry we experienced an error sending a batch invite for exam number{" "}
           {examId}.
+        </p>
+      )}
+
+      {isBatchInviting && (
+        <p className="success-message">
+          Please wait. Sending your batch invite...
         </p>
       )}
 
