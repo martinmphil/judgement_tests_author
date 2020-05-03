@@ -1,5 +1,10 @@
-# Authoring (SJT) Situational Judgement Tests
-Authoring, and assessing results from, [situational judgment tests App](https://github.com/martinmphil/judgement_tests).
+# Authoring Situational Judgement Tests
+
+Secure dashboard app for authoring, and assessing results from, [Situational Judgement Tests](https://en.wikipedia.org/wiki/Situational_judgement_test).
+
+Author's dashboard app helps assesses the results from Situational Judgement Tests by summarising candidate scores and formatting data for download as comma separated values. This app also allows Authors to securely login/logout, create, read, update and delete test questions, and can easily distribute tests to many candidates with batch invites. 
+
+For candidates' Situational Judgment Test App, see [situational judgment tests app repository](https://github.com/martinmphil/judgement_tests)
 
 ![sjt_authoring_logo](https://user-images.githubusercontent.com/37618836/75996959-8be18580-5ef6-11ea-9ab6-998b5baafa6f.png)
 
