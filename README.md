@@ -6,7 +6,7 @@ Author's dashboard app helps assesses the results from Situational Judgement Tes
 
 For candidates' Situational Judgment Test App, see [situational judgment tests app repository](https://github.com/martinmphil/judgement_tests)
 
-![sjt_authoring_logo](https://user-images.githubusercontent.com/37618836/75996959-8be18580-5ef6-11ea-9ab6-998b5baafa6f.png)
+[![judgement-tests-logo](https://user-images.githubusercontent.com/37618836/157410123-7232d7ca-d255-4799-908d-a3baf0926d6c.png)](http://dancewith.co.uk/sjt/)
 
 ## Available Scripts
 
